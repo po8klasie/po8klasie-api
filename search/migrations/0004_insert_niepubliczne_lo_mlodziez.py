@@ -20,7 +20,8 @@ def load_data_private_lo_youth(apps, schema):
                 school = PrivateSchool()
                 address = Address()
                 address.district = row[0]
-                school.school_name = row[1]
+                # some schools have different locations written in brackets with their name
+                school.school_name = row[1].split('(')[0]
                 address.street = row[2]
                 address.building_nr = row[3]
                 address.postcode = row[4].strip()

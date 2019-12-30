@@ -17,7 +17,7 @@ Ochota,"Europejskie Centrum Opieki Długoterminowej
 Policealna Szkoła dla Opiekunów Medycznych w Warszawie",S. Banacha ,1a,02-097,Warszawa,opiekun medyczny,471 Z
 Ochota," Szkoła Policealna  ""Educatio"" ",Nowowiejska,37a,02-010,Warszawa,technik Administracji                                                 technik ochrony fizycznej osób i mienia                                                technik bezpieczeństwa i higieny pracy                                         technik rachunkowości                                    technik usług kosmetycznych                                  technik informatyk                                       florysta,441 Z
 Ochota,Policealne Studium Informatyki     i Rachunkowości,Sędziowska ,1,02-081,Warszawa,technik informatyk   ,23 Z
-Ochota,Szkoła Policealna Studium Pracowników Medycznych i Społecznych,Grójecka,93,02-101,Warszawa,"opiekun medyczny, technik masażysta, terapeuta zajęciowy, higienistka stomatologiczna, protetyk słuchu, ortoptystka, technik elektroradiolog, technik dentystyczny, asystentka stomatologiczna, technik faramceutyczny, technik ortopeda, technik usług kosmetycznych, technik optyk, technik administracji
+Ochota,Szkoła Policealna Studium Pracowników Medycznych i Społecznych,Grójecka,93,02-101,Warszawa,"opiekun medyczny, technik masażysta, terapeuta zajęciowy, higienistka stomatologiczna, protetyk słuchu, ortoptystka, technik elektroradiolog, technik dentystyczny, asystentka stomatologiczna, technik farmaceutyczny, technik ortopeda, technik usług kosmetycznych, technik optyk, technik administracji
 ",468 Z
 Praga Południe,Policealna Szkoła Kosmetyczna ,Kaleńska,3,04-367,Warszawa,"technik usług kosmetycznych
 ",357 Z
@@ -61,7 +61,7 @@ technik usług kosmetycznych
 technik ochrony fizycznej osób i mienia
 technik eksploatacji portów i terminali",475 Z
 Wola,Szkoła Policealna  Opieki Medycznej „Żak” w Warszawie,Okopowa   ,59,01-043,Warszawa,opiekun medyczny,478 Z
-Praga Północ,Policealna Szkoła Zawodowa Edicus w Warszawie,Kawęczyńska,36,03-772,Warszawa,"technik bezpieczeństwa i higieny pracy                                                                          technik administracji,                                     technik rachunkowości                                   technik usług kosmetycznych                                       protetyk słuchu                                                                opiekun medyczny                                                       ortoptystka                      opiekun osoby styarszej                                                    terapeuta zjęciowy",469 Z
+Praga Północ,Policealna Szkoła Zawodowa Edicus w Warszawie,Kawęczyńska,36,03-772,Warszawa,"technik bezpieczeństwa i higieny pracy                                                                          technik administracji,                                     technik rachunkowości                                   technik usług kosmetycznych                                       protetyk słuchu                                                                opiekun medyczny                                                       ortoptystka                      opiekun osoby starszej                                                    terapeuta zajęciowy",469 Z
 Praga Północ,Policealna Warszawska Szkoła Medyczna (II miejsce prowadzenia ul. Objazdowa 3,Ząbkowska,42,03-735,Warszawa,"asystentka stomatologiczna
 higienistka stomatologiczna 
 technik sterylizacji medycznej
@@ -79,7 +79,7 @@ technik realizacji nagłośnień",394 Z
 Śródmieście," Policealna Szkoła  ""COSINUS III"" w Warszawie  (  II miejsce ul. Ratuszowa 13; III miejsce ul. Van Gogha 1, IV miejsce: Fundamentowa 38/42, V miejsce: ul. Burdzinskiego 4)",Stawki ,10,00-193,Warszawa,"technik administracji, technik turystyki wiejskiej, technik usług kosmetycznych, technik bezpieczeństwa i higieny pracy, asystent kierownika produkcji filmowej/telewizyjnej, technik informatyk, technik usług pocztowych i finansowych, florysta, technik weterynarii, technik archiwista",438 Z
 Śródmieście,ALLMED.EDU Policealna Szkoła Zawodowa w Warszawie (I miejsce ul. Czerniakowska 128),Al.. Solidarności,117/810,00-140,Warszawa,"asystentka stomatologiczna
 asystent osoby niepełnosprawnej, florysta, opiekun medyczny, opiekunka środowiskowa, technik sterylizacji medycznej",480 Z
-Śródmieście,WARS Policealna Szkoła Medyczna w Warszawie (I m. prowadzenia  ul. Górnośląska 31),Al.. Jerozlimskie ,49/29,00-697,Warszawa,"opiekun medyczny
+Śródmieście,WARS Policealna Szkoła Medyczna w Warszawie (I m. prowadzenia  ul. Górnośląska 31),Al.. Jerozolimskie ,49/29,00-697,Warszawa,"opiekun medyczny
 technik masażysta
 asystentka stomatologiczna
 higienistka stomatologiczna",421 Z
@@ -142,7 +142,7 @@ technik ochrony osób i mienia
 technik optyk
 ",302 Z
 Śródmieście,Policealna Szkoła Asystentów Stomatologicznych,Karmelicka,9,00-155,Warszawa,asystentka stomatologiczna,459 Z
-Śródmieście,"""Progres Szkoła Policealnaw Warszawie",Smolna ,13,00-375,Warszawa,"
+Śródmieście,"""Progres Szkoła Policealna W Warszawie",Smolna ,13,00-375,Warszawa,"
 technik administracji
 technik archiwista
 technik bhp
@@ -157,7 +157,7 @@ opiekunka dziecięca ",269 Z
 Śródmieście,Policealna Szkoła Opiekunów Medycznych,Karmelicka,9,00-155,Warszawa,opiekun medyczny,454 Z
 Śródmieście,Policealna Szkoła Ortoptystek,Karmelicka,9,00-155,Warszawa,ortoptystka,477 Z
 Śródmieście,Policealna Szkoła Protetyki Słuchu,Karmelicka,9,00-155,Warszawa,protetyk słuchu,458 Z
-Śródmieście,Policealna Szkoła Sterylizacji Medycznej,Karmelicka,9,00-155,Warszawa,technik steryizacji medycznej,471 Z
+Śródmieście,Policealna Szkoła Sterylizacji Medycznej,Karmelicka,9,00-155,Warszawa,technik sterylizacji medycznej,471 Z
 Śródmieście,Policealna Szkoła Szkoła Masażu,Karmelicka,9,00-155,Warszawa,technik masażysta,456 Z
 Śródmieście,Policealna Szkoła Techników Dentystycznych,Karmelicka,9,00-155,Warszawa,technik dentystyczny,464 Z
 Śródmieście,Policealna Szkoła Techników Elektroradiologów,Karmelicka,9,00-155,Warszawa,technik elektroradiolog,470 Z
@@ -166,9 +166,9 @@ opiekunka dziecięca ",269 Z
 Śródmieście,Policealna Szkoła Weterynarii,Karmelicka,9,00-155,Warszawa,technik weterynarii,453 Z
 Śródmieście,Policealne Studium Medycyny Sportu. Szkoła Policealna,Marszałkowska ,"99a, lok. 5b",00-693,Warszawa,"technik masażysta
 technik sterylizacji medycznej                                                    opiekun medyczny",410 Z
-Śródmieście,Policealne Studium Nagrań Dźwiekowych,Podwale ,13,00-252,Warszawa,"technik realizacji nagrań
+Śródmieście,Policealne Studium Nagrań Dźwiękowych,Podwale ,13,00-252,Warszawa,"technik realizacji nagrań
 technik realizacji nagłośnień",432 Z
-Śródmieście,Profesja Edukacja Policealna Szkoła Zawodwa  w Warszawie,Świętokrzyska,18 lok. 225,00-867,Warszawa,"technik administracji                                  
+Śródmieście,Profesja Edukacja Policealna Szkoła Zawodowa  w Warszawie,Świętokrzyska,18 lok. 225,00-867,Warszawa,"technik administracji                                  
 technik informatyk
 technik bezpieczeństwa i higieny pracy
 florysta, asystentka stomatologiczna, higienistka stomatologiczna
@@ -179,7 +179,7 @@ opiekun medyczny
 terapeuta zajęciowy",452 Z
 Śródmieście,Szkoła Medyczna Go Work.pl,Żurawia,47/49,00-680,Warszawa,"technik farmaceutyczny
 technik dentystyczny ",423 Z
-Śródmieście,Szkoła Policealna Go Work.pl,Żurawia,47/49,00-680,Warszawa,"technik administracji+
+Śródmieście,Szkoła Policealna Go Work.pl,Żurawia,47/49,00-680,Warszawa,"technik administracji
 technik bezpieczeństwa i higieny pracy                                             technik ortopeda
 technik usług kosmetycznych
 technik masażysta
@@ -227,18 +227,18 @@ technik bezpieczeństwa i higieny pracy, florysta
 technik usług kosmetycznych
 opiekunka dziecięca
 ",490 Z
-Śródmieście,"Policealna Szkoła Zawodowa Centrum Nauki Biznesu i Administracji w Warszawie (I miejsce:  ul. Rejtana 16, II miejsce: ul. Siennicka 15)",Marszałkowska ,8 m. 8,00-590,Warszawa,"technik administracji                                                 technik bezpieczeństwa i higieny pracy,                                                                     technik rachunkowści,                                   opiekun medyczny                                                        technik usług kosmetycznych
-technik masazysta",479 Z
+Śródmieście,"Policealna Szkoła Zawodowa Centrum Nauki Biznesu i Administracji w Warszawie (I miejsce:  ul. Rejtana 16, II miejsce: ul. Siennicka 15)",Marszałkowska ,8 m. 8,00-590,Warszawa,"technik administracji                                                 technik bezpieczeństwa i higieny pracy,                                                                     technik rachunkowości,                                   opiekun medyczny                                                        technik usług kosmetycznych
+technik masażysta",479 Z
 Targówek,Policealna Szkoła Zawodowa EDICUS II,Trocka ,4,03-563,Warszawa,technik administracji                                                    technik usług kosmetycznych                                       technik rachunkowości                             technik bezpieczeństwa i higieny pracy,484 Z
 Targówek,Policealna Szkoła Zawodowa Zacisze,Radzymińska,242,03-674,Warszawa,"technik administracji
-technik usług kosmetycnych
-technik rachunkowosci                                                                        
+technik usług kosmetycznych
+technik rachunkowości                                                                        
 asystent osoby niepełnosprawnej
 opiekun osoby starszej
-opekun w domu pomocy społecznej
+opiekun w domu pomocy społecznej
 opiekunka środowiskowa",427 Z
 Targówek,Policealna Szkoła Zawodowa Edicus w Warszawie,Trocka,4,03-563,Warszawa,"technik administracji, technik rachunkowości, technik informatyk, technik bezpieczeństwa i higieny pracy, technik usług kosmetycznych",481 Z
-Targówek,Zaoczna Policealna Szkoła Zawodowa LOGOS (II miejsce: ul. Kawęczyńska 36),Trocka,4,03-563,Warszawa,"opiekun w domu pomocy społecznej                            , technik bezpieczeństwa i higieny pracy                            , technik rachunkowosci,                                  technik administracji,                                                      technik indformatyk,                                               technik turystyki wiejskiej",435 Z
+Targówek,Zaoczna Policealna Szkoła Zawodowa LOGOS (II miejsce: ul. Kawęczyńska 36),Trocka,4,03-563,Warszawa,"opiekun w domu pomocy społecznej                            , technik bezpieczeństwa i higieny pracy                            , technik rachunkowości,                                  technik administracji,                                                      technik informatyk,                                               technik turystyki wiejskiej",435 Z
 Ursynów,Policealne Studium Reklamy Handlowej,S. Szolc-Rogozińskiego ,3,02-777,Warszawa,asystent kierownika produkcji filmowej i telewizyjnej,42 Z
 Ursynów,"Warszawska Akademia Reklamy, Fotografii i Filmu-Policealne Studium Zawodowe w Warszawie",S. Szolc-Rogozińskiego ,3,02-777,Warszawa,asystent kierownika produkcji filmowej i telewizyjnej,234 Z
 Ursynów,EDULIDER Szkoła Policealna w Warszawa,Sarabandy,16/22,02-868,Warszawa,"asystent osoby niepełnosprawnej
@@ -261,7 +261,7 @@ Wesoła,Policealna Europejska Szkoła Zawodowa w Wesołej,Kruszyny ,14a,05-077,W
 technik rachunkowości
 technik administracji
 technik bhp
-ttechnik ochrony fizycznej osób i mienia",201 Z
+technik ochrony fizycznej osób i mienia",201 Z
 Wola,Akademia - Policealna Szkoła Zawodowa nr 1,Jana Kazimierza,45/5,01-248,Warszawa,"technik informatyk
 technik usług kosmetycznych
 opiekun w domu pomocy społecznej
@@ -272,7 +272,7 @@ technik masażysta
 technik weterynarii",325 Z
 Wola,Medyczne Studium Zawodowe ,M. Kasprzaka,49,01-234,Warszawa,"technik masażysta
                ",29 Z
-Wola,"Policealna Szkoła  ""COSINUS I"" w Warszawie  ( II miejsce ul. Kasprzaka 1/3; III miejsce ul. Szolc-Rogozińskiego 2; IV miejsce Ul. Filarecka 2; , V miejsce ul. Chłodna 36/46,   VI miejsce: ul. Żelazna 71, VII miejsce ul. Felińskiego 13) ",Łucka,13,00-842,Warszawa," technik turystyki wiejskiej,
+Wola,"Policealna Szkoła  ""COSINUS I"" w Warszawie  ( II miejsce ul. Kasprzaka 1/3; III miejsce ul. Szolc-Rogozińskiego 2; IV miejsce Ul. Filarecka 2; , V miejsce ul. Chłodna 36/46,   VI miejsce: ul. Żelazna 71, VII miejsce ul. Felińskiego 13) ",Łucka,13,00-842,Warszawa,"technik turystyki wiejskiej,
 - technik geodeta
 - technik eksploatacji iportów i terminali
 - florysta,
