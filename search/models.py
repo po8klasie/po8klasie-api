@@ -1,6 +1,6 @@
 from django.core.validators import RegexValidator, EmailValidator
 from django.db import models
-from django.contrib.postgres.fields import JSONField
+from django.contrib.postgres.fields import JSONField, IntegerRangeField
 from django.contrib.postgres.fields import ArrayField
 
 
@@ -57,3 +57,50 @@ class PublicSchool(School):
 class PrivateSchool(School):
     registration_nr = models.CharField(max_length=20)
 
+
+class HighSchoolClass(models.Model):
+    letter = models.CharField(max_length=10)
+    # O - ogólnokształcące, MS - mistrzostwa sportowego
+    type = models.CharField(max_length=10)
+    name = models.CharField(max_length=200)
+    school_id = models.CharField(max_length=100)
+    year = IntegerRangeField()
+
+
+class ExtendedSubject(models.Model):
+    subjects = [('biol', 'biologia'), ('chem', 'chemia'), ('filoz', 'filozofia'), ('fiz', 'fizyka'),
+                ('geogr', 'geografia'), ('hist', 'historia'), ('h.muz.', 'historia muzyki'),
+                ('h.szt.', 'historia sztuki'), ('inf', 'informatyka'),
+                ('pol', 'język polski'), ('mat', 'matematyka'),
+                ('wos', 'wiedza o społeczeństwie'), ('obcy', 'obcy')]
+
+    languages = [('ang', 'język angielski'), ('franc', 'język francuski'),
+                 ('hiszp', 'język hiszpański'), ('niem', 'język niemiecki'),
+                 ('ros', 'język rosyjski'), ('wło', 'język włoski'),
+                 ('antyk', 'język łaciński i kultura antyczna'),
+                 ('język białoruski', 'język białoruski'), ('język litewski', 'język litewski'),
+                 ('język ukraiński', 'język ukraiński'), ('język łemkowski', 'język łemkowski'),
+                 ('język kaszubski', 'język kaszubski')]
+
+    high_school_class = models.ForeignKey(HighSchoolClass, on_delete=models.CASCADE)
+    name = models.CharField(choices=subjects + languages, max_length=40)
+
+
+class Language(models.Model):
+    high_school_class = models.ForeignKey(HighSchoolClass, on_delete=models.CASCADE)
+    name = models.CharField(choices=ExtendedSubject.languages, max_length=40)
+
+
+class Statistics(models.Model):
+    LAUREAT = -1.0
+    high_school_class = models.ForeignKey(HighSchoolClass, on_delete=models.CASCADE)
+    # tura rekrutacji
+    round = models.IntegerField()
+    # aka próg
+    points_min = models.FloatField()
+    points_max = models.FloatField()
+    points_avg = models.FloatField()
+    with_competency_test = models.BooleanField(default=False)
+    only_sports_test = models.BooleanField(default=False)
+
+# TODO technika, szkoły sportowe, prywatne
