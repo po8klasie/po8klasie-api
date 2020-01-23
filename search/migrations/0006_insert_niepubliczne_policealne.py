@@ -5,7 +5,7 @@ from search.models import Address, PrivateSchool
 
 
 def load_data_private_policealne(apps, schema):
-    with open('csv/niepubliczne_policealne.csv', newline='') as csv_file:
+    with open('csvs/niepubliczne_policealne.csv', newline='') as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=',')
         row_number = 0
         for row in csv_reader:

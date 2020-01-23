@@ -6,7 +6,7 @@ from search.models import PublicSchool, PublicInstitutionData, Address, ContactD
 
 
 def load_data_private_lo_adult(apps, schema):
-    with open('csv/niepubliczne_lo_dorosli.csv', newline='') as csv_file:
+    with open('csvs/niepubliczne_lo_dorosli.csv', newline='') as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=',')
         row_number = 0
         for row in csv_reader:

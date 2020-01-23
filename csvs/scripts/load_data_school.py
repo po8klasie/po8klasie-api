@@ -6,7 +6,7 @@ from search.models import PublicSchool, PublicInstitutionData, Address, ContactD
 
 
 def get_types():
-    with open('csv/publiczne.csv', newline='') as csv_file:
+    with open('csvs/publiczne.csv', newline='') as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=',')
         row_nr = 0
         types = {}
@@ -117,7 +117,7 @@ def load_data(apps, schema_editor):
 
 
 def load_data_private_lo_youth():
-    with open('csv/niepubliczne_lo_mlodziez.csv', newline='') as csv_file:
+    with open('csvs/niepubliczne_lo_mlodziez.csv', newline='') as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=',')
         row_number = 0
         for row in csv_reader:
@@ -142,7 +142,7 @@ def load_data_private_lo_youth():
 
 
 def load_data_private_lo_adult(apps, schema):
-    with open('csv/niepubliczne_lo_mlodziez.csv', newline='') as csv_file:
+    with open('csvs/niepubliczne_lo_mlodziez.csv', newline='') as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=',')
         row_number = 0
         for row in csv_reader:
@@ -167,7 +167,7 @@ def load_data_private_lo_adult(apps, schema):
 
 
 def load_data_private_policealne(apps, schema):
-    with open('csv/niepubliczne_policealne.csv', newline='') as csv_file:
+    with open('csvs/niepubliczne_policealne.csv', newline='') as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=',')
         row_number = 0
         for row in csv_reader:
@@ -182,7 +182,7 @@ def load_data_private_policealne(apps, schema):
 
 
 def load_data_private_technikum(apps, schema):
-    with open('csv/niepubliczne_technika_mlodziez.csv', newline='') as csv_file:
+    with open('csvs/niepubliczne_technika_mlodziez.csv', newline='') as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=',')
         row_number = 0
         for row in csv_reader:

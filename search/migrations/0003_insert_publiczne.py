@@ -7,7 +7,7 @@ from search.models import PublicSchool, PublicInstitutionData, Address, ContactD
 
 
 def load_data(apps, schema_editor):
-    with open('csv/publiczne.csv', newline='') as csv_file:
+    with open('csvs/publiczne.csv', newline='') as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=',')
         row_number = 0
         for row in csv_reader:
