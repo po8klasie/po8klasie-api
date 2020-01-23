@@ -1,11 +1,11 @@
 import csv
 import re
-from search.models import PublicSchool, HighSchoolClass, PublicInstitutionData, Address, ContactData, PrivateSchool, \
-    ExtendedSubject
+
+from search.models import PublicSchool, HighSchoolClass, ExtendedSubject, Statistics
 
 
 def load():
-    with open('csv/Punkty 2018_2019 -  .csv', newline='') as csv_file:
+    with open('csvs/Punkty 2018_2019 -  .csv', newline='') as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=',')
         row_number = 0
         for row in csv_reader:
@@ -31,3 +31,24 @@ def load():
                 # languages are placed in brackets eg. (ang*, niem*)
                 languages = re.sub('[\\(\\)]', '', re.findall(r'\(.+\)', class_name)[0]).strip().split(',')
                 print(languages)
+                # TODO
+
+                # stats
+                st = Statistics()
+                st.high_school_class = hss
+                stats = {'min': row[4].strip(), 'avg': row[5].strip(), 'max': row[6].strip()}
+                for (k, v) in stats.items():
+                    if 'laur' in v.lower():
+                        stats[k] = Statistics.LAUREAT
+                    elif '**' in v:
+                        st.with_competency_test = True
+                        stats[k] = re.sub('\\*', '', v)
+                    elif '*' in v:
+                        st.only_sports_test = True
+                        stats[k] = re.sub('\\*', '', v)
+
+                st.points_min = stats['min']
+                st.points_avg = stats['avg']
+                st.points_max = stats['max']
+
+
