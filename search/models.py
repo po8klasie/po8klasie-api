@@ -59,12 +59,27 @@ class PrivateSchool(School):
 
 
 class HighSchoolClass(models.Model):
-    letter = models.CharField(max_length=10)
     # O - ogólnokształcące, MS - mistrzostwa sportowego
     type = models.CharField(max_length=10)
     name = models.CharField(max_length=200)
-    school_id = models.CharField(max_length=100)
+    school_id = models.IntegerField()
     year = IntegerRangeField()
+
+
+class Language(models.Model):
+    languages = [('ang', 'język angielski'), ('franc', 'język francuski'),
+                 ('hiszp', 'język hiszpański'), ('niem', 'język niemiecki'),
+                 ('ros', 'język rosyjski'), ('wło', 'język włoski'),
+                 ('antyk', 'język łaciński i kultura antyczna'),
+                 ('język białoruski', 'język białoruski'), ('język litewski', 'język litewski'),
+                 ('język ukraiński', 'język ukraiński'), ('język łemkowski', 'język łemkowski'),
+                 ('język kaszubski', 'język kaszubski')]
+    high_school_class = models.ForeignKey(HighSchoolClass, on_delete=models.CASCADE)
+    name = models.CharField(choices=languages, max_length=40)
+    # pierwszy język obcy/drugi język obcy
+    nr = models.IntegerField(choices=[(1, 'pierwszy'), (2, 'drugi')])
+    is_bilingual = models.BooleanField(default=False)
+    multiple_levels = models.BooleanField(default=False)
 
 
 class ExtendedSubject(models.Model):
@@ -74,21 +89,8 @@ class ExtendedSubject(models.Model):
                 ('pol', 'język polski'), ('mat', 'matematyka'),
                 ('wos', 'wiedza o społeczeństwie'), ('obcy', 'obcy')]
 
-    languages = [('ang', 'język angielski'), ('franc', 'język francuski'),
-                 ('hiszp', 'język hiszpański'), ('niem', 'język niemiecki'),
-                 ('ros', 'język rosyjski'), ('wło', 'język włoski'),
-                 ('antyk', 'język łaciński i kultura antyczna'),
-                 ('język białoruski', 'język białoruski'), ('język litewski', 'język litewski'),
-                 ('język ukraiński', 'język ukraiński'), ('język łemkowski', 'język łemkowski'),
-                 ('język kaszubski', 'język kaszubski')]
-
     high_school_class = models.ForeignKey(HighSchoolClass, on_delete=models.CASCADE)
-    name = models.CharField(choices=subjects + languages, max_length=40)
-
-
-class Language(models.Model):
-    high_school_class = models.ForeignKey(HighSchoolClass, on_delete=models.CASCADE)
-    name = models.CharField(choices=ExtendedSubject.languages, max_length=40)
+    name = models.CharField(choices=subjects + Language.languages, max_length=40)
 
 
 class Statistics(models.Model):
