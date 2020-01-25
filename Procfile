@@ -1,0 +1,1 @@
+web: gunicorn warsawlo.wsgi --log-file -
