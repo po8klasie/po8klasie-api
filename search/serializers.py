@@ -6,6 +6,7 @@ class PublicSchoolSerializer(serializers.ModelSerializer):
     class Meta:
         model = PublicSchool
         fields = '__all__'
+        depth = 2
 
 
 class ExtendedSubjectSerializer(serializers.ModelSerializer):
