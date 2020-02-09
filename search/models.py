@@ -22,6 +22,8 @@ class ContactData(models.Model):
 
 class School(models.Model):
     school_name = models.CharField(max_length=200)
+    # eg. "Batory", "Poniatówka"
+    nickname = models.CharField(max_length=50, default=None, null=True)
     school_type = models.CharField(max_length=100)
     school_type_generalised = models.CharField(max_length=40)
     student_type = models.CharField(max_length=100)

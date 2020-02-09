@@ -8,6 +8,12 @@ class PublicSchoolSerializer(serializers.ModelSerializer):
         fields = '__all__'
         depth = 2
 
+class PrivateSchoolSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PrivateSchool
+        fields = '__all__'
+        depth = 2
+
 
 class ExtendedSubjectSerializer(serializers.ModelSerializer):
     class Meta:
