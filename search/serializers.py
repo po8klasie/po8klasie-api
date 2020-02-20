@@ -5,7 +5,7 @@ from search.models import *
 class PublicSchoolSerializer(serializers.ModelSerializer):
     class Meta:
         model = PublicSchool
-        fields = '__all__'
+        exclude = ['public_institution_data']
         depth = 2
 
 class PrivateSchoolSerializer(serializers.ModelSerializer):
@@ -18,19 +18,19 @@ class PrivateSchoolSerializer(serializers.ModelSerializer):
 class ExtendedSubjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = ExtendedSubject
-        fields = ['name']
+        fields = '__all__'
 
 
 class LanguageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Language
-        fields = ['name', 'nr', 'is_bilingual', 'multiple_levels']
+        fields = '__all__'
 
 
 class StatisticsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Statistics
-        fields = ['round', 'points_min', 'points_max', 'points_avg', 'with_competency_test', 'only_sports_test']
+        fields = '__all__'
 
 
 class SchoolNameField(serializers.RelatedField):
@@ -56,13 +56,27 @@ class SchoolNameField(serializers.RelatedField):
         return {'school_name': value.school_name}
 
 
-class HighSchoolClassSerializer(serializers.ModelSerializer):
-    # school = SchoolNameField(queryset=)
-    languages = LanguageSerializer(many=True)
-    subjects = ExtendedSubjectSerializer(many=True)
-    stats = StatisticsSerializer(allow_null=True)
+# http://www.django-rest-framework.org/api-guide/fields/#serializermethodfield
+
+class HighSchoolClassSerializer(serializers.HyperlinkedModelSerializer):
+    languages = serializers.SerializerMethodField()
+    subjects = serializers.SerializerMethodField()
+    stats = serializers.SerializerMethodField()
 
     class Meta:
         model = HighSchoolClass
-        exclude = ['school_id']
+        fields = '__all__'
         depth = 2
+
+    def get_languages(self, obj):
+        lang = Language.objects.filter(high_school_class=obj.id)
+        return LanguageSerializer(lang, many=True).data
+
+    def get_subjects(self, obj):
+        sub = ExtendedSubject.objects.filter(high_school_class=obj.id)
+        return ExtendedSubjectSerializer(sub, many=True).data
+
+    def get_stats(self, obj):
+        stat = Statistics.objects.filter(high_school_class=obj.id)
+        return StatisticsSerializer(stat, many=True).data
+
