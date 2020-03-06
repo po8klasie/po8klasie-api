@@ -1,7 +1,7 @@
 from django.db import migrations
 import csv
 import re
-from search.models import Address, PrivateSchool
+from search.models import Address, School, PrivateInstitutionData
 
 
 def load_data_private_policealne(apps, schema):
@@ -15,7 +15,7 @@ def load_data_private_policealne(apps, schema):
                 row_number += 1
                 print(f'row {row_number} inserted')
 
-                school = PrivateSchool()
+                school = School()
                 address = Address()
                 address.district = row[0]
                 school.school_name = row[1].split('(')[0]
@@ -34,11 +34,15 @@ def load_data_private_policealne(apps, schema):
                 profs = list(filter(None, profs))
                 school.data = {'zawód': profs}
 
-                school.registration_nr = row[7]
+                data = PrivateInstitutionData()
+                data.registration_nr = row[7]
+                school.private_institution_data = data
+                school.is_public = False
                 school.school_type = 'szkoła policealna'
                 school.school_type_generalised = 'szkoła policealna'
                 school.student_type = 'bez kategorii'
                 school.address = address
+                data.save()
                 address.save()
                 school.save()
 

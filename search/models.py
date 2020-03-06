@@ -20,23 +20,6 @@ class ContactData(models.Model):
     email = models.CharField(EmailValidator(), max_length=100, null=True)
 
 
-class School(models.Model):
-    school_name = models.CharField(max_length=200)
-    # eg. "Batory", "Poniatówka"
-    nickname = models.CharField(max_length=50, default=None, null=True)
-    school_type = models.CharField(max_length=100)
-    school_type_generalised = models.CharField(max_length=40)
-    student_type = models.CharField(max_length=100)
-    is_special_needs_school = models.BooleanField(default=False)
-    address = models.ForeignKey(Address, on_delete=models.CASCADE)
-    contact = models.ForeignKey(ContactData, on_delete=models.CASCADE, null=True)
-    specialised_divisions = ArrayField(models.CharField(max_length=100), null=True)
-    data = JSONField(null=True)
-
-    class Meta:
-        abstract = True
-
-
 class PublicInstitutionData(models.Model):
     # institution = placówka
     short_name = models.CharField(max_length=20)
@@ -51,20 +34,32 @@ class PublicInstitutionData(models.Model):
     data = JSONField(null=True)
 
 
-class PublicSchool(School):
-    public_institution_data = models.ForeignKey(PublicInstitutionData, on_delete=models.CASCADE)
-    data = JSONField(null=True)
-
-
-class PrivateSchool(School):
+class PrivateInstitutionData(models.Model):
     registration_nr = models.CharField(max_length=20)
+
+
+class School(models.Model):
+    school_name = models.CharField(max_length=200)
+    # eg. "Batory", "Poniatówka"
+    nickname = models.CharField(max_length=50, default=None, null=True)
+    school_type = models.CharField(max_length=100)
+    school_type_generalised = models.CharField(max_length=40)
+    student_type = models.CharField(max_length=100)
+    is_special_needs_school = models.BooleanField(default=False)
+    address = models.ForeignKey(Address, on_delete=models.CASCADE)
+    contact = models.ForeignKey(ContactData, on_delete=models.CASCADE, null=True)
+    specialised_divisions = ArrayField(models.CharField(max_length=100), null=True)
+    is_public = models.BooleanField()
+    public_institution_data = models.ForeignKey(PublicInstitutionData, on_delete=models.SET_NULL, null=True)
+    private_institution_data = models.ForeignKey(PrivateInstitutionData, on_delete=models.SET_NULL, null=True)
+    data = JSONField(null=True)
 
 
 class HighSchoolClass(models.Model):
     # O - ogólnokształcące, MS - mistrzostwa sportowego
     type = models.CharField(max_length=10)
     name = models.CharField(max_length=200)
-    school_id = models.IntegerField()
+    school = models.ForeignKey(School, on_delete=models.CASCADE)
     year = IntegerRangeField()
 
 

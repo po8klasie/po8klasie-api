@@ -5,7 +5,7 @@ from django.db import migrations
 import csv
 import re
 from psycopg2.extras import NumericRange
-from search.models import PublicSchool, HighSchoolClass, ExtendedSubject, Statistics, Language
+from search.models import School, HighSchoolClass, ExtendedSubject, Statistics, Language
 
 
 def load(apps, schema):
@@ -16,10 +16,10 @@ def load(apps, schema):
             row_number += 1
             if row_number > 4 and row[1] == 'LO' and 'Branżowa' not in row[2]:
                 name = row[2].strip()
-                school = PublicSchool.objects.get(school_name=name)
+                school = School.objects.get(school_name=name)
                 print(school.school_name + ':' + str(school.id))
                 hss = HighSchoolClass()
-                hss.school_id = school.id
+                hss.school = school
                 class_name = row[3]
                 # first part of name eg. 1A humanistyczna
                 hss.name = re.sub('[\\[]', '', re.findall(r'.+\[', class_name)[0]).strip()
@@ -92,7 +92,7 @@ def load(apps, schema):
 
 class Migration(migrations.Migration):
     dependencies = [
-        ('search', '0008_extendedsubject_highschoolclass_language_statistics'),
+        ('search', '0007_insert_niepubliczne_technikum_mlodziez'),
     ]
 
     operations = [

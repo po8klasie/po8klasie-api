@@ -2,15 +2,33 @@ from rest_framework import serializers
 from search.models import *
 
 
-class PublicSchoolSerializer(serializers.ModelSerializer):
+class AddressSerializer(serializers.ModelSerializer):
     class Meta:
-        model = PublicSchool
-        exclude = ['public_institution_data']
-        depth = 2
+        model = Address
+        fields = '__all__'
 
-class PrivateSchoolSerializer(serializers.ModelSerializer):
+
+class ContactSerializer(serializers.ModelSerializer):
     class Meta:
-        model = PrivateSchool
+        model = ContactData
+        fields = '__all__'
+
+
+class PublicInstitutionDataSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PublicInstitutionData
+        fields = '__all__'
+
+
+class PrivateInstitutionDataSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PrivateInstitutionData
+        fields = '__all__'
+
+
+class SchoolSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = School
         fields = '__all__'
         depth = 2
 
@@ -79,4 +97,3 @@ class HighSchoolClassSerializer(serializers.HyperlinkedModelSerializer):
     def get_stats(self, obj):
         stat = Statistics.objects.filter(high_school_class=obj.id)
         return StatisticsSerializer(stat, many=True).data
-

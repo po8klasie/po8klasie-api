@@ -3,7 +3,7 @@
 from django.db import migrations
 
 import csv
-from search.models import PublicSchool, PublicInstitutionData, Address, ContactData
+from search.models import School, PublicInstitutionData, Address, ContactData
 
 
 def load_data(apps, schema_editor):
@@ -14,7 +14,7 @@ def load_data(apps, schema_editor):
             if row_number == 0:
                 row_number += 1
             elif row[46] != 'jednostka inna niż przedszkole lub szkoła':
-                school = PublicSchool()
+                school = School()
 
                 public_data = PublicInstitutionData()
                 public_data.institution_short_name = row[0]
@@ -28,6 +28,7 @@ def load_data(apps, schema_editor):
                 public_data.institution_type = row[8]
                 school.school_type = row[9]
                 school.student_type = row[10]
+                school.is_public = True
                 school.is_special_needs_school = True if row[11] == "tak" else False
                 public_data.data = {'supervisor': row[12]}
 
@@ -97,9 +98,8 @@ def load_data(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('search', '0002_address_contactdata_privateschool_publicinstitutiondata_publicschool'),
+        ('search', '0002_contact_school_address_institutiondata_highschoolclass'),
     ]
-
     operations = [
         migrations.RunPython(load_data)
     ]

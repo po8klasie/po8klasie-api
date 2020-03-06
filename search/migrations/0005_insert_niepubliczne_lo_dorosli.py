@@ -2,7 +2,7 @@
 
 from django.db import migrations
 import csv
-from search.models import PublicSchool, PublicInstitutionData, Address, ContactData, PrivateSchool
+from search.models import School, PrivateInstitutionData, Address, ContactData
 
 
 def load_data_private_lo_adult(apps, schema):
@@ -16,7 +16,7 @@ def load_data_private_lo_adult(apps, schema):
                 row_number += 1
                 print(f'row {row_number} inserted')
 
-                school = PrivateSchool()
+                school = School()
                 address = Address()
                 address.district = row[0]
 
@@ -26,11 +26,15 @@ def load_data_private_lo_adult(apps, schema):
                 address.building_nr = row[3]
                 address.postcode = row[4].strip()
                 address.city = row[5]
-                school.registration_nr = row[6]
+                data = PrivateInstitutionData()
+                data.registration_nr = row[6]
                 school.school_type = 'liceum ogólnokształcące'
                 school.school_type_generalised = 'szkoła ponadpodstawowa'
                 school.student_type = 'dorosli'
                 school.address = address
+                school.private_institution_data = data
+                school.is_public = False
+                data.save()
                 address.save()
                 school.save()
 

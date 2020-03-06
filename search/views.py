@@ -1,41 +1,59 @@
 from django.http import JsonResponse
 from rest_framework import viewsets
 from django.contrib.postgres.search import TrigramSimilarity
+from django_filters import rest_framework as filters
 
 from search.serializers import *
 
 
-class HighSchoolViewSet(viewsets.ViewSet):
+# class HighSchoolViewSet(viewsets.ViewSet):
+#
+#     def list(self, request, format=None):
+#         if request.GET.get('name') is not None:
+#             name = request.GET.get('name')
+#             schools = School.objects \
+#                 .filter(school_type='liceum ogólnokształcące') \
+#                 .annotate(similarity=TrigramSimilarity('school_name', name)) \
+#                 .filter(similarity__gte=0.06) \
+#                 .order_by('-similarity')
+#         else:
+#             schools = School.objects \
+#                 .filter(school_type='liceum ogólnokształcące')
+#
+#         serializer = SchoolSerializer(schools, many=True)
+#         return JsonResponse(serializer.data, safe=False)
 
-    def list(self, request, format=None):
-        public_schools = PublicSchool.objects \
-            .filter(school_type='liceum ogólnokształcące')
-        private_schools = PrivateSchool.objects \
-            .filter(school_type='liceum ogólnokształcące')
-        if request.GET.get('name') is not None:
-            name = request.GET.get('name')
-            public_schools = public_schools \
-                .annotate(similarity=TrigramSimilarity('school_name', name)) \
-                .filter(similarity__gte=0.06) \
-                .order_by('-similarity')
-            private_schools = private_schools \
-                .annotate(similarity=TrigramSimilarity('school_name', name)) \
-                .filter(similarity__gte=0.06) \
-                .order_by('-similarity')
-
-        serializer_public = PublicSchoolSerializer(public_schools, many=True)
-        serializer_private = PrivateSchoolSerializer(private_schools, many=True)
-        return JsonResponse(serializer_public.data + serializer_private.data, safe=False)
-
-
-class HighSchoolPublicViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = PublicSchool.objects.filter(school_type='liceum ogólnokształcące')
-    serializer_class = PublicSchoolSerializer
+class SchoolViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = School.objects.all()
+    serializers = SchoolSerializer
+    serializer_class = SchoolSerializer
 
 
-class HighSchoolPrivateViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = PrivateSchool.objects.filter(school_type='liceum ogólnokształcące')
-    serializer_class = PrivateSchoolSerializer
+class HighSchoolViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = School.objects.filter(school_type='liceum ogólnokształcące')
+    serializer_class = SchoolSerializer
+    filterset_fields = ['is_public']
+    search_fields = ['school_name']
+
+
+class AddressViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Address.objects.all()
+    serializer_class = AddressSerializer
+
+
+class ContactViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = ContactData.objects.all()
+    serializer_class = ContactSerializer
+
+
+class PublicInstitutionDataViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = PublicInstitutionData.objects.all()
+    serializer_class = PublicInstitutionDataSerializer
+
+
+class PrivateInstitutionDataViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = PrivateInstitutionData.objects.all()
+    serializer_class = PrivateInstitutionDataSerializer
 
 
 class HighSchoolClassViewSet(viewsets.ReadOnlyModelViewSet):
