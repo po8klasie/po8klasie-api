@@ -1,4 +1,6 @@
+from django.contrib.postgres.search import TrigramSimilarity
 from rest_framework import viewsets
+from rest_framework.response import Response
 from search.serializers import *
 
 
@@ -6,7 +8,26 @@ class SchoolViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = School.objects.all()
     serializers = SchoolSerializer
     serializer_class = SchoolSerializer
-    filterset_fields = [f.name for f in School._meta.fields if f.name not in ['specialised_divisions', 'data']]
+    filterset_fields = [f.name for f in School._meta.fields if
+                        f.name not in ['specialised_divisions', 'data', 'school_name']]
+
+    def list(self, request, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+
+        if request.GET.get('school_name') is not None:
+            name = request.GET.get('school_name')
+            queryset = queryset\
+                .annotate(similarity=TrigramSimilarity('school_name', name))\
+                .filter(similarity__gte=0.05)\
+                .order_by('-similarity')
+
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
 
 
 class HighSchoolViewSet(viewsets.ReadOnlyModelViewSet):
@@ -14,6 +35,12 @@ class HighSchoolViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = SchoolSerializer
     filterset_fields = [f.name for f in School._meta.fields if f.name not in ['specialised_divisions', 'data']]
     search_fields = ['school_name', 'school_type']
+
+
+class TechnikumViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = School.objects.filter(school_type='technikum')
+    serializer_class = SchoolSerializer
+    filterset_fields = [f.name for f in School._meta.fields if f.name not in ['specialised_divisions', 'data']]
 
 
 class AddressViewSet(viewsets.ReadOnlyModelViewSet):
