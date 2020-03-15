@@ -30,7 +30,7 @@ class SchoolSerializer(serializers.ModelSerializer):
     class Meta:
         model = School
         fields = '__all__'
-        # depth = 2
+        depth = 2
 
 
 class ExtendedSubjectSerializer(serializers.ModelSerializer):
