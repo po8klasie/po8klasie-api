@@ -2,8 +2,8 @@ name: CI-test
 
 on:
   push:
-    branches: [ '*' ]
-    tags: [ '* ']
+  release:
+    types: [published]
 
 jobs:
   build-and-push:
