@@ -1,9 +1,6 @@
 name: CI-test
 
-on:
-  push:
-  release:
-    types: [published]
+on: [push]
 
 jobs:
   build-and-push:
