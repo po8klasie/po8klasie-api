@@ -1,86 +1,17 @@
 from django.contrib.postgres.search import TrigramSimilarity
 from rest_framework import viewsets
-from rest_framework.mixins import ListModelMixin
 from rest_framework.response import Response
-from django.db.models import Q
-from functools import reduce
-from operator import or_
+
 from search.serializers import *
+from search.mixins import FilterWithBooleanMixin, FilterWithBooleanAndSearchMixin
 
 
-class FilterWithBooleanMixin(ListModelMixin):
-    OR = "|"
-
-    def list(self, request, *args, **kwargs):
-        if not self._is_request_with_booleans(request):
-            return super().list(request, kwargs)
-
-        queryset = self._query_with_boolean(request)
-        page = self.paginate_queryset(queryset)
-        if page is not None:
-            serializer = self.get_serializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
-
-        serializer = self.get_serializer(queryset, many=True)
-        return Response(serializer.data)
-
-    def _query_with_boolean(self, request):
-        queries = self._parse_expressions(request.GET)
-        queryset = self.get_queryset()
-        # perform AND
-        for q in queries:
-            if not q:
-                continue
-            # perform OR
-            query = reduce(or_, q)
-            queryset = queryset.filter(query)
-        return queryset
-
-    def _parse_expressions(self, query_params):
-        queries = []
-        for field in query_params.keys():
-            expressions = query_params.getlist(field)
-            if not expressions or all(v == '' for v in expressions):
-                continue
-            for exp in expressions:
-                values = exp.split(self.OR)
-                queries.append([Q(**{field: val}) for val in values])
-        return queries
-
-    def _is_request_with_booleans(self, request):
-        for key in request.GET.keys():
-            values = request.GET.getlist(key)
-            if not values or all(v == '' for v in values):
-                continue
-            if len(values) > 1 or any(self.OR in v for v in values):
-                return True
-        return False
-
-
-class SchoolViewSet(viewsets.ReadOnlyModelViewSet):
+class SchoolViewSet(FilterWithBooleanAndSearchMixin, viewsets.ReadOnlyModelViewSet):
     queryset = School.objects.all()
     serializers = SchoolSerializer
     serializer_class = SchoolSerializer
     filterset_fields = [f.name for f in School._meta.fields if
                         f.name not in ['specialised_divisions', 'data', 'school_name']]
-
-    def list(self, request, **kwargs):
-        queryset = self.filter_queryset(self.get_queryset())
-
-        if request.GET.get('school_name') is not None:
-            name = request.GET.get('school_name')
-            queryset = queryset \
-                .annotate(similarity=TrigramSimilarity('school_name', name)) \
-                .filter(similarity__gte=0.05) \
-                .order_by('-similarity')
-
-        page = self.paginate_queryset(queryset)
-        if page is not None:
-            serializer = self.get_serializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
-
-        serializer = self.get_serializer(queryset, many=True)
-        return Response(serializer.data)
 
 
 class HighSchoolViewSet(FilterWithBooleanMixin, viewsets.ReadOnlyModelViewSet):
