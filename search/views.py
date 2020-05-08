@@ -1,9 +1,8 @@
-from django.contrib.postgres.search import TrigramSimilarity
 from rest_framework import viewsets
 from rest_framework.response import Response
 
-from search.serializers import *
 from search.mixins import FilterWithBooleanMixin, FilterWithBooleanAndSearchMixin
+from search.serializers import *
 
 
 class SchoolViewSet(FilterWithBooleanAndSearchMixin, viewsets.ReadOnlyModelViewSet):
@@ -12,6 +11,28 @@ class SchoolViewSet(FilterWithBooleanAndSearchMixin, viewsets.ReadOnlyModelViewS
     serializer_class = SchoolSerializer
     filterset_fields = [f.name for f in School._meta.fields if
                         f.name not in ['specialised_divisions', 'data', 'school_name']]
+    DISTRICT_FIELD = 'district'
+    STREET_FIELD = 'street'
+
+    def list(self, request, *args, **kwargs):
+        query_params = request.GET.copy()
+        queryset = self.get_processed_queryset(query_params)
+        queryset = self._filter_district(request, queryset)
+        queryset = self._filter_street(request, queryset)
+        serializer = self._paginate(queryset)
+        return Response(serializer.data)
+
+    def _filter_district(self, request, queryset):
+        value = request.GET.get(self.DISTRICT_FIELD, None)
+        if value:
+            queryset = queryset.filter(address__district=value)
+        return queryset
+
+    def _filter_street(self, request, queryset):
+        value = request.GET.get(self.STREET_FIELD, None)
+        if value:
+            queryset = queryset.filter(address__street=value)
+        return queryset
 
 
 class HighSchoolViewSet(FilterWithBooleanMixin, viewsets.ReadOnlyModelViewSet):
