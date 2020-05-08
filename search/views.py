@@ -1,3 +1,4 @@
+from django.db.models import Q
 from rest_framework import viewsets
 from rest_framework.response import Response
 
@@ -11,9 +12,6 @@ class SchoolViewSet(FilterWithBooleanAndSearchMixin, viewsets.ReadOnlyModelViewS
     serializer_class = SchoolSerializer
     filterset_fields = [f.name for f in School._meta.fields if
                         f.name not in ['specialised_divisions', 'data', 'school_name']]
-    DISTRICT_FIELD = 'district'
-    STREET_FIELD = 'street'
-    SUBJECT_FIELD = 'subject'
 
     def list(self, request, *args, **kwargs):
         query_params = request.GET.copy()
