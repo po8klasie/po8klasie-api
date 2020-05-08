@@ -47,7 +47,7 @@ class FilterWithBooleanMixin(GeneralMixin):
 
     def _parse_expressions(self, query_params):
         queries = []
-        fields = [key for key in query_params.keys() if key in self.filterset_fields]
+        fields = [key for key in query_params.keys()]
         for field in fields:
             expressions = query_params.getlist(field)
             if not expressions or all(v == '' for v in expressions):

@@ -13,26 +13,13 @@ class SchoolViewSet(FilterWithBooleanAndSearchMixin, viewsets.ReadOnlyModelViewS
                         f.name not in ['specialised_divisions', 'data', 'school_name']]
     DISTRICT_FIELD = 'district'
     STREET_FIELD = 'street'
+    SUBJECT_FIELD = 'subject'
 
     def list(self, request, *args, **kwargs):
         query_params = request.GET.copy()
         queryset = self.get_processed_queryset(query_params)
-        queryset = self._filter_district(request, queryset)
-        queryset = self._filter_street(request, queryset)
         serializer = self._paginate(queryset)
         return Response(serializer.data)
-
-    def _filter_district(self, request, queryset):
-        value = request.GET.get(self.DISTRICT_FIELD, None)
-        if value:
-            queryset = queryset.filter(address__district=value)
-        return queryset
-
-    def _filter_street(self, request, queryset):
-        value = request.GET.get(self.STREET_FIELD, None)
-        if value:
-            queryset = queryset.filter(address__street=value)
-        return queryset
 
 
 class HighSchoolViewSet(FilterWithBooleanMixin, viewsets.ReadOnlyModelViewSet):
