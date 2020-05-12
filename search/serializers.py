@@ -34,15 +34,28 @@ class SchoolSerializer(serializers.ModelSerializer):
 
 
 class ExtendedSubjectSerializer(serializers.ModelSerializer):
+    full_name = serializers.SerializerMethodField()
+
     class Meta:
         model = ExtendedSubject
         fields = '__all__'
 
+    def get_full_name(self, obj):
+        full_name = dict(ExtendedSubject.subjects).get(obj.name, None)
+        if full_name is None:
+            full_name = dict(Language.languages).get(obj.name, '')
+        return full_name
+
 
 class LanguageSerializer(serializers.ModelSerializer):
+    full_name = serializers.SerializerMethodField()
+
     class Meta:
         model = Language
         fields = '__all__'
+
+    def get_full_name(self, obj):
+        return dict(Language.languages).get(obj.name, '')
 
 
 class StatisticsSerializer(serializers.ModelSerializer):

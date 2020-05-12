@@ -79,9 +79,10 @@ class HighSchoolClass(models.Model):
 
 
 class Language(models.Model):
-    languages = [('ang', 'język angielski'), ('franc', 'język francuski'),
-                 ('hiszp', 'język hiszpański'), ('niem', 'język niemiecki'),
-                 ('ros', 'język rosyjski'), ('wło', 'język włoski'),
+    languages = [('ang', 'język angielski'), ('fra', 'język francuski'), ('franc', 'język francuski'),
+                 ('hisz', 'język hiszpański'), ('hiszp', 'język hiszpański'), ('niem', 'język niemiecki'),
+                 ('por', 'język portugalski'),
+                 ('ros', 'język rosyjski'), ('wlo', 'język włoski'), ('wło', 'język włoski'),
                  ('antyk', 'język łaciński i kultura antyczna'),
                  ('język białoruski', 'język białoruski'), ('język litewski', 'język litewski'),
                  ('język ukraiński', 'język ukraiński'), ('język łemkowski', 'język łemkowski'),

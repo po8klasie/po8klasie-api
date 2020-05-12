@@ -1,6 +1,7 @@
 from django.db.models import Q
 from rest_framework import viewsets
 from rest_framework.response import Response
+from django.db.models import F, ExpressionWrapper, CharField
 
 from search.mixins import FilterWithBooleanMixin, FilterWithBooleanAndSearchMixin
 from search.serializers import *
@@ -79,3 +80,16 @@ class StatisticsViewSet(FilterWithBooleanMixin, viewsets.ReadOnlyModelViewSet):
     queryset = Statistics.objects.all()
     serializer_class = StatisticsSerializer
     filterset_fields = [f.name for f in Statistics._meta.fields]
+
+
+class AllLanguagesViewSet(FilterWithBooleanMixin, viewsets.ReadOnlyModelViewSet):
+    queryset = Language.objects.distinct('name').filter(~Q(name=''))
+    serializer_class = LanguageSerializer
+    filterset_fields = []
+
+
+class AllSubjectsViewSet(FilterWithBooleanMixin, viewsets.ReadOnlyModelViewSet):
+    queryset = ExtendedSubject.objects.distinct('name').filter(~Q(name=''))
+    serializer_class = ExtendedSubjectSerializer
+    filterset_fields = []
+
