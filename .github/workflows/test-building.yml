@@ -3,7 +3,7 @@ name: Test building
 on: [pull_request]
 
 jobs:
-  build-and-push:
+  test-building:
     runs-on: ubuntu-latest
 
     steps:
