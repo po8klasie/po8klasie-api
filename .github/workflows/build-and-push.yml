@@ -38,6 +38,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Deploy
-        run: |-
-          gcloud compute ssh --zone ${GCE_INSTANCE_ZONE} ${GCE_INSTANCE} -- \
-            -C "cd /home/mlazowik/infra && bash update-backend.sh"
+      run: |-
+        gcloud compute ssh --zone ${GCE_INSTANCE_ZONE} ${GCE_INSTANCE} -- \
+          -C "cd /home/mlazowik/infra && bash update-backend.sh"
