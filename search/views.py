@@ -1,7 +1,5 @@
 from django.db.models import Q
 from rest_framework import viewsets
-from rest_framework.response import Response
-from django.db.models import F, ExpressionWrapper, CharField
 
 from search.mixins import FilterWithBooleanMixin, FilterWithBooleanAndSearchMixin
 from search.serializers import *
@@ -13,12 +11,6 @@ class SchoolViewSet(FilterWithBooleanAndSearchMixin, viewsets.ReadOnlyModelViewS
     serializer_class = SchoolSerializer
     filterset_fields = [f.name for f in School._meta.fields if
                         f.name not in ['specialised_divisions', 'data', 'school_name']]
-
-    def list(self, request, *args, **kwargs):
-        query_params = request.GET.copy()
-        queryset = self.get_processed_queryset(query_params)
-        serializer = self._paginate(queryset)
-        return Response(serializer.data)
 
 
 class HighSchoolViewSet(FilterWithBooleanMixin, viewsets.ReadOnlyModelViewSet):

@@ -1,14 +1,37 @@
 from django.contrib.postgres.search import TrigramSimilarity
+from django.core.exceptions import FieldError
 from rest_framework.mixins import ListModelMixin
 from rest_framework.response import Response
 from django.db.models import Q
 from functools import reduce
 from operator import or_
 
+from rest_framework.settings import api_settings
+
 
 class GeneralMixin(ListModelMixin):
+    ordering_param = api_settings.ORDERING_PARAM
+
     class Meta:
         abstract = True
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        queryset = self._order(queryset, request.GET)
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+
+    def _order(self, queryset, query_params):
+        params = query_params.get(self.ordering_param)
+        if params:
+            fields = [param.strip() for param in params.split(',')]
+            queryset = queryset.order_by(*fields)
+        return queryset
 
     def _paginate(self, queryset):
         page = self.paginate_queryset(queryset)
@@ -30,6 +53,7 @@ class FilterWithBooleanMixin(GeneralMixin):
             return super().list(request, kwargs)
 
         queryset = self.get_processed_queryset(request.GET)
+        queryset = self._order(queryset, request.GET)
         serializer = self._paginate(queryset)
         return Response(serializer.data)
 
@@ -47,7 +71,7 @@ class FilterWithBooleanMixin(GeneralMixin):
 
     def _parse_expressions(self, query_params):
         queries = []
-        fields = [key for key in query_params.keys()]
+        fields = [key for key in query_params.keys() if key != self.ordering_param]
         for field in fields:
             expressions = query_params.getlist(field)
             if not expressions or all(v == '' for v in expressions):
@@ -72,6 +96,7 @@ class SearchNameMixin(GeneralMixin):
 
     def list(self, request, *args, **kwargs):
         queryset = self.get_processed_queryset(request.GET)
+        queryset = self._order(queryset, request.GET)
         serializer = self._paginate(queryset)
         return Response(serializer.data)
 
@@ -96,18 +121,19 @@ class SearchNameMixin(GeneralMixin):
 class FilterWithBooleanAndSearchMixin(FilterWithBooleanMixin, SearchNameMixin):
 
     def list(self, request, *args, **kwargs):
-        if not self._is_request_with_booleans(request) or not self._is_request_with_search(request):
-            return super().list(request, args, kwargs)
-        query_params = request.GET.copy()
-        queryset = self.queryset(query_params)
+        try:
+            queryset = self.get_processed_queryset(request.GET)
+        except (ValueError, FieldError) as e:
+            return Response(f'Invalid query: {e}', 400)
         serializer = self._paginate(queryset)
         return Response(serializer.data)
 
     def get_processed_queryset(self, query_params):
+        query_params = query_params.copy()
         search_expressions = query_params.pop(self.SEARCH_FIELD, None)
         queryset = super().get_processed_queryset(query_params)
         if search_expressions and any(v != '' for v in search_expressions):
             for exp in search_expressions:
                 values = exp.split(self.OR)
                 queryset = self._search(queryset, values[0])
-        return queryset
+        return self._order(queryset, query_params)
