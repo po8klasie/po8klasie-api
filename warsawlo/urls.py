@@ -18,7 +18,7 @@ from django.urls import include, path
 from rest_framework.schemas import get_schema_view
 
 urlpatterns = [
-    path('', include('search.urls')),
+    path('api/', include('search.urls')),
     path('admin/', admin.site.urls),
     path('openapi/', get_schema_view(
         title="WarsaawLO",
