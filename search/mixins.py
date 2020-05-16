@@ -43,7 +43,7 @@ class FilterWithBooleanMixin(GeneralMixin):
             # perform OR
             query = reduce(or_, q)
             queryset = queryset.filter(query)
-        return queryset
+        return queryset.distinct()
 
     def _parse_expressions(self, query_params):
         queries = []
