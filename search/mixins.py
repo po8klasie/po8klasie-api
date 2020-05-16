@@ -11,6 +11,7 @@ from rest_framework.settings import api_settings
 
 class GeneralMixin(ListModelMixin):
     ordering_param = api_settings.ORDERING_PARAM
+    page_param = 'page'
 
     class Meta:
         abstract = True
@@ -71,7 +72,7 @@ class FilterWithBooleanMixin(GeneralMixin):
 
     def _parse_expressions(self, query_params):
         queries = []
-        fields = [key for key in query_params.keys() if key != self.ordering_param]
+        fields = [key for key in query_params.keys() if key not in [self.ordering_param, self.page_param]]
         for field in fields:
             expressions = query_params.getlist(field)
             if not expressions or all(v == '' for v in expressions):
