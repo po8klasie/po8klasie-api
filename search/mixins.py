@@ -34,13 +34,13 @@ class GeneralMixin(ListModelMixin):
             queryset = queryset.order_by(*fields)
         return queryset
 
-    def _paginate(self, queryset):
+    def _paginate(self, queryset, request):
         page = self.paginate_queryset(queryset)
         if page is not None:
-            serializer = self.get_serializer(page, many=True)
+            serializer = self.get_serializer(instance=page, context={'request': request}, many=True)
             return self.get_paginated_response(serializer.data)
 
-        return self.get_serializer(queryset, many=True)
+        return self.get_serializer(instance=queryset, context={'request': request}, many=True)
 
     def get_processed_queryset(self, query_params):
         pass
@@ -55,7 +55,7 @@ class FilterWithBooleanMixin(GeneralMixin):
 
         queryset = self.get_processed_queryset(request.GET)
         queryset = self._order(queryset, request.GET)
-        serializer = self._paginate(queryset)
+        serializer = self._paginate(queryset, request)
         return Response(serializer.data)
 
     def get_processed_queryset(self, query_params):
@@ -98,7 +98,7 @@ class SearchNameMixin(GeneralMixin):
     def list(self, request, *args, **kwargs):
         queryset = self.get_processed_queryset(request.GET)
         queryset = self._order(queryset, request.GET)
-        serializer = self._paginate(queryset)
+        serializer = self._paginate(queryset, request)
         return Response(serializer.data)
 
     def get_processed_queryset(self, query_params):
@@ -126,7 +126,7 @@ class FilterWithBooleanAndSearchMixin(FilterWithBooleanMixin, SearchNameMixin):
             queryset = self.get_processed_queryset(request.GET)
         except (ValueError, FieldError) as e:
             return Response(f'Invalid query: {e}', 400)
-        serializer = self._paginate(queryset)
+        serializer = self._paginate(queryset, request)
         return Response(serializer.data)
 
     def get_processed_queryset(self, query_params):

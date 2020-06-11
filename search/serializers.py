@@ -27,10 +27,16 @@ class PrivateInstitutionDataSerializer(serializers.ModelSerializer):
 
 
 class SchoolSerializer(serializers.ModelSerializer):
+    classes = serializers.SerializerMethodField()
+
     class Meta:
         model = School
         fields = '__all__'
         depth = 2
+
+    def get_classes(self, obj):
+        classes = HighSchoolClass.objects.filter(school=obj.id)
+        return HighSchoolClassSerializer(classes, many=True, context=self.context).data
 
 
 class ExtendedSubjectSerializer(serializers.ModelSerializer):
@@ -97,7 +103,6 @@ class HighSchoolClassSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = HighSchoolClass
         fields = '__all__'
-        depth = 2
 
     def get_languages(self, obj):
         lang = Language.objects.filter(high_school_class=obj.id)
