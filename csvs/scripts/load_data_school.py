@@ -2,12 +2,18 @@
 
 import csv
 import re
-from search.models import PublicSchool, PublicInstitutionData, Address, ContactData, PrivateSchool
+from search.models import (
+    PublicSchool,
+    PublicInstitutionData,
+    Address,
+    ContactData,
+    PrivateSchool,
+)
 
 
 def get_types():
-    with open('csvs/publiczne.csv', newline='') as csv_file:
-        csv_reader = csv.reader(csv_file, delimiter=',')
+    with open("csvs/publiczne.csv", newline="") as csv_file:
+        csv_reader = csv.reader(csv_file, delimiter=",")
         row_nr = 0
         types = {}
         for row in csv_reader:
@@ -21,17 +27,17 @@ def get_types():
                 elif type not in types:
                     types[type] = [gen_type]
         for k, v in types.items():
-            print('|' + k + '|' + v[0] + '|' + '\n')
+            print("|" + k + "|" + v[0] + "|" + "\n")
 
 
 def load_data(apps, schema_editor):
-    with open('publiczne.csv', newline='') as csv_file:
-        csv_reader = csv.reader(csv_file, delimiter=',')
+    with open("publiczne.csv", newline="") as csv_file:
+        csv_reader = csv.reader(csv_file, delimiter=",")
         row_number = 0
         for row in csv_reader:
             if row_number == 0:
                 row_number += 1
-            elif row[46] != 'jednostka inna niż przedszkole lub szkoła':
+            elif row[46] != "jednostka inna niż przedszkole lub szkoła":
                 for col in row:
                     if len(col) > 100:
                         print(col)
@@ -51,12 +57,12 @@ def load_data(apps, schema_editor):
                 school.school_type = row[9]
                 school.student_type = row[10]
                 school.is_special_needs_school = True if row[11] == "tak" else False
-                public_data.data = {'supervisor': row[12]}
+                public_data.data = {"supervisor": row[12]}
 
                 address = Address()
                 address.city = row[13]
                 address.district = row[14]
-                public_data.data['information_system'] = row[15]
+                public_data.data["information_system"] = row[15]
                 address.street = row[16]
                 address.building_nr = row[17]
                 address.postcode = row[18]
@@ -64,47 +70,49 @@ def load_data(apps, schema_editor):
                 contact = ContactData()
                 contact.phone = row[21]
                 contact.website = row[23]
-                public_data.data['BIP'] = row[24]
+                public_data.data["BIP"] = row[24]
                 contact.email = row[25]
 
-                public_data.data['has_dormitory'] = True if row[27] == 'tak' else False
+                public_data.data["has_dormitory"] = True if row[27] == "tak" else False
 
                 divisions = []
-                if row[35] == 'tak':
-                    divisions.append('dwujęzyczne')
-                if row[36] == 'tak':
-                    divisions.append('integracyjne')
-                if row[37] == 'tak':
-                    divisions.append('sportowe')
-                if row[38] == 'tak':
-                    divisions.append('mistrzostwa sportowego')
-                if row[39] == 'tak':
-                    divisions.append('międzynarodowe')
-                if row[40] == 'tak':
-                    divisions.append('specjalne')
-                if row[41] == 'tak':
-                    divisions.append('specjalne przysposabiające do pracy')
-                if row[42] == 'tak':
-                    divisions.append('terapeutyczne')
-                if row[43] == 'tak':
-                    divisions.append('eksperymentalne')
+                if row[35] == "tak":
+                    divisions.append("dwujęzyczne")
+                if row[36] == "tak":
+                    divisions.append("integracyjne")
+                if row[37] == "tak":
+                    divisions.append("sportowe")
+                if row[38] == "tak":
+                    divisions.append("mistrzostwa sportowego")
+                if row[39] == "tak":
+                    divisions.append("międzynarodowe")
+                if row[40] == "tak":
+                    divisions.append("specjalne")
+                if row[41] == "tak":
+                    divisions.append("specjalne przysposabiające do pracy")
+                if row[42] == "tak":
+                    divisions.append("terapeutyczne")
+                if row[43] == "tak":
+                    divisions.append("eksperymentalne")
                 school.specialised_divisions = divisions
 
-                school.data = {'is_in_school_complex': True if row[45] == 'tak' else False}
-                if row[46] == 'szkoła podstawowa (w tym muzyczna)':
-                    school.school_type_generalised = 'szkoła podstawowa'
+                school.data = {
+                    "is_in_school_complex": True if row[45] == "tak" else False
+                }
+                if row[46] == "szkoła podstawowa (w tym muzyczna)":
+                    school.school_type_generalised = "szkoła podstawowa"
                 else:
                     school.school_type_generalised = row[46]
 
-                public_data.data['RSPO_url'] = row[60]
-                public_data.data['psychological_clinic'] = row[62]
-                public_data.data['main_disability'] = row[63]
-                public_data.data['is_by_hospital'] = True if row[64] == 'tak' else False
+                public_data.data["RSPO_url"] = row[60]
+                public_data.data["psychological_clinic"] = row[62]
+                public_data.data["main_disability"] = row[63]
+                public_data.data["is_by_hospital"] = True if row[64] == "tak" else False
 
-                address.longitude = row[66].replace(',', '.')
-                address.latitude = row[65].replace(',', '.')
+                address.longitude = row[66].replace(",", ".")
+                address.latitude = row[65].replace(",", ".")
 
-                public_data.data['ankietyBE_id'] = row[69]
+                public_data.data["ankietyBE_id"] = row[69]
 
                 school.address = address
                 school.contact = contact
@@ -117,8 +125,8 @@ def load_data(apps, schema_editor):
 
 
 def load_data_private_lo_youth():
-    with open('csvs/niepubliczne_lo_mlodziez.csv', newline='') as csv_file:
-        csv_reader = csv.reader(csv_file, delimiter=',')
+    with open("csvs/niepubliczne_lo_mlodziez.csv", newline="") as csv_file:
+        csv_reader = csv.reader(csv_file, delimiter=",")
         row_number = 0
         for row in csv_reader:
             if row_number == 0:
@@ -133,17 +141,17 @@ def load_data_private_lo_youth():
                 address.postcode = row[4].strip()
                 address.city = row[5]
                 school.registration_nr = row[6]
-                school.school_type = 'liceum ogólnokształcące'
-                school.school_type_generalised = 'szkoła ponadpodstawowa'
-                school.student_type = 'dzieci lub młodzież'
+                school.school_type = "liceum ogólnokształcące"
+                school.school_type_generalised = "szkoła ponadpodstawowa"
+                school.student_type = "dzieci lub młodzież"
                 school.address = address
                 address.save()
                 school.save()
 
 
 def load_data_private_lo_adult(apps, schema):
-    with open('csvs/niepubliczne_lo_mlodziez.csv', newline='') as csv_file:
-        csv_reader = csv.reader(csv_file, delimiter=',')
+    with open("csvs/niepubliczne_lo_mlodziez.csv", newline="") as csv_file:
+        csv_reader = csv.reader(csv_file, delimiter=",")
         row_number = 0
         for row in csv_reader:
             if row_number == 0:
@@ -158,17 +166,17 @@ def load_data_private_lo_adult(apps, schema):
                 address.postcode = row[4].strip()
                 address.city = row[5]
                 school.registration_nr = row[6]
-                school.school_type = 'liceum ogólnokształcące'
-                school.school_type_generalised = 'szkoła ponadpodstawowa'
-                school.student_type = 'dorosli'
+                school.school_type = "liceum ogólnokształcące"
+                school.school_type_generalised = "szkoła ponadpodstawowa"
+                school.student_type = "dorosli"
                 school.address = address
                 address.save()
                 school.save()
 
 
 def load_data_private_policealne(apps, schema):
-    with open('csvs/niepubliczne_policealne.csv', newline='') as csv_file:
-        csv_reader = csv.reader(csv_file, delimiter=',')
+    with open("csvs/niepubliczne_policealne.csv", newline="") as csv_file:
+        csv_reader = csv.reader(csv_file, delimiter=",")
         row_number = 0
         for row in csv_reader:
             if row_number == 0:
@@ -176,26 +184,26 @@ def load_data_private_policealne(apps, schema):
             else:
                 data = re.sub(r"  +", "\n", row[6])
                 data = re.sub(r", ", "\n", data)
-                data = data.strip().strip('- ').strip('-').strip(',')
+                data = data.strip().strip("- ").strip("-").strip(",")
                 profs = data.lower().splitlines()
                 print(profs)
 
 
 def load_data_private_technikum(apps, schema):
-    with open('csvs/niepubliczne_technika_mlodziez.csv', newline='') as csv_file:
-        csv_reader = csv.reader(csv_file, delimiter=',')
+    with open("csvs/niepubliczne_technika_mlodziez.csv", newline="") as csv_file:
+        csv_reader = csv.reader(csv_file, delimiter=",")
         row_number = 0
         for row in csv_reader:
             if row_number == 0:
                 row_number += 1
             else:
                 row_number += 1
-                print(f'row {row_number} inserted')
+                print(f"row {row_number} inserted")
 
                 school = PrivateSchool()
                 address = Address()
                 address.district = row[0]
-                school.school_name = row[1].split('(')[0]
+                school.school_name = row[1].split("(")[0]
                 if school.school_name is None:
                     continue
                 address.street = row[2]
@@ -206,15 +214,15 @@ def load_data_private_technikum(apps, schema):
                 # clean profession column
                 data = re.sub(r"  +", "\n", row[6])
                 data = re.sub(r", ", "\n", data)
-                data = data.strip().strip('- ').strip('-').strip(',')
+                data = data.strip().strip("- ").strip("-").strip(",")
                 profs = data.lower().splitlines()
                 profs = list(filter(None, profs))
-                school.data = {'zawód': profs}
+                school.data = {"zawód": profs}
 
                 school.registration_nr = row[7]
-                school.school_type = 'technikum'
-                school.school_type_generalised = 'szkoła ponadpodstawowa'
-                school.student_type = 'dzieci lub młodzież'
+                school.school_type = "technikum"
+                school.school_type_generalised = "szkoła ponadpodstawowa"
+                school.student_type = "dzieci lub młodzież"
                 school.address = address
                 address.save()
                 school.save()

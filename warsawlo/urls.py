@@ -18,11 +18,13 @@ from django.urls import include, path
 from rest_framework.schemas import get_schema_view
 
 urlpatterns = [
-    path('api/', include('search.urls')),
-    path('admin/', admin.site.urls),
-    path('openapi/', get_schema_view(
-        title="WarsaawLO",
-        description="API for search",
-        version="1.0.0"
-    ), name='openapi-schema'),
+    path("api/", include("search.urls")),
+    path("admin/", admin.site.urls),
+    path(
+        "openapi/",
+        get_schema_view(
+            title="WarsaawLO", description="API for search", version="1.0.0"
+        ),
+        name="openapi-schema",
+    ),
 ]

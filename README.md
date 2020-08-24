@@ -25,6 +25,21 @@ docker-compose up -d --build # build and start containers
 docker-compose exec web python manage.py migrate --noinput # run migrations
 ```
 
+#### Linter
+We use [black](https://github.com/psf/black) autoformatter and flake8. 
+
+Install:
+```shell script
+pip install black # install
+pip install flake8
+```
+
+Run:
+```shell script
+black .
+flake8
+```
+
 ## Queries
 
 #### Boolean filtering

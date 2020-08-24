@@ -2,28 +2,60 @@ from django.db.models import Q
 from rest_framework import viewsets
 
 from search.mixins import FilterWithBooleanMixin, FilterWithBooleanAndSearchMixin
-from search.serializers import *
+from search.models import (
+    School,
+    Address,
+    ContactData,
+    PrivateInstitutionData,
+    PublicInstitutionData,
+    HighSchoolClass,
+    ExtendedSubject,
+    Language,
+    Statistics,
+)
+from search.serializers import (
+    SchoolSerializer,
+    ExtendedSubjectSerializer,
+    LanguageSerializer,
+    StatisticsSerializer,
+    AddressSerializer,
+    ContactSerializer,
+    HighSchoolClassSerializer,
+    PrivateInstitutionDataSerializer,
+    PublicInstitutionDataSerializer,
+)
 
 
 class SchoolViewSet(FilterWithBooleanAndSearchMixin, viewsets.ReadOnlyModelViewSet):
     queryset = School.objects.all()
     serializers = SchoolSerializer
     serializer_class = SchoolSerializer
-    filterset_fields = [f.name for f in School._meta.fields if
-                        f.name not in ['specialised_divisions', 'data', 'school_name']]
+    filterset_fields = [
+        f.name
+        for f in School._meta.fields
+        if f.name not in ["specialised_divisions", "data", "school_name"]
+    ]
 
 
 class HighSchoolViewSet(FilterWithBooleanMixin, viewsets.ReadOnlyModelViewSet):
-    queryset = School.objects.filter(school_type='liceum ogólnokształcące')
+    queryset = School.objects.filter(school_type="liceum ogólnokształcące")
     serializer_class = SchoolSerializer
-    filterset_fields = [f.name for f in School._meta.fields if f.name not in ['specialised_divisions', 'data']]
-    search_fields = ['school_name', 'school_type']
+    filterset_fields = [
+        f.name
+        for f in School._meta.fields
+        if f.name not in ["specialised_divisions", "data"]
+    ]
+    search_fields = ["school_name", "school_type"]
 
 
 class TechnikumViewSet(FilterWithBooleanMixin, viewsets.ReadOnlyModelViewSet):
-    queryset = School.objects.filter(school_type='technikum')
+    queryset = School.objects.filter(school_type="technikum")
     serializer_class = SchoolSerializer
-    filterset_fields = [f.name for f in School._meta.fields if f.name not in ['specialised_divisions', 'data']]
+    filterset_fields = [
+        f.name
+        for f in School._meta.fields
+        if f.name not in ["specialised_divisions", "data"]
+    ]
 
 
 class AddressViewSet(FilterWithBooleanMixin, viewsets.ReadOnlyModelViewSet):
@@ -38,13 +70,19 @@ class ContactViewSet(FilterWithBooleanMixin, viewsets.ReadOnlyModelViewSet):
     filterset_fields = [f.name for f in ContactData._meta.fields]
 
 
-class PublicInstitutionDataViewSet(FilterWithBooleanMixin, viewsets.ReadOnlyModelViewSet):
+class PublicInstitutionDataViewSet(
+    FilterWithBooleanMixin, viewsets.ReadOnlyModelViewSet
+):
     queryset = PublicInstitutionData.objects.all()
     serializer_class = PublicInstitutionDataSerializer
-    filterset_fields = [f.name for f in PublicInstitutionData._meta.fields if f.name not in ['data']]
+    filterset_fields = [
+        f.name for f in PublicInstitutionData._meta.fields if f.name not in ["data"]
+    ]
 
 
-class PrivateInstitutionDataViewSet(FilterWithBooleanMixin, viewsets.ReadOnlyModelViewSet):
+class PrivateInstitutionDataViewSet(
+    FilterWithBooleanMixin, viewsets.ReadOnlyModelViewSet
+):
     queryset = PrivateInstitutionData.objects.all()
     serializer_class = PrivateInstitutionDataSerializer
     filterset_fields = [f.name for f in PrivateInstitutionData._meta.fields]
@@ -53,7 +91,9 @@ class PrivateInstitutionDataViewSet(FilterWithBooleanMixin, viewsets.ReadOnlyMod
 class HighSchoolClassViewSet(FilterWithBooleanMixin, viewsets.ReadOnlyModelViewSet):
     queryset = HighSchoolClass.objects.all()
     serializer_class = HighSchoolClassSerializer
-    filterset_fields = [f.name for f in HighSchoolClass._meta.fields if f.name not in ['year']]
+    filterset_fields = [
+        f.name for f in HighSchoolClass._meta.fields if f.name not in ["year"]
+    ]
 
 
 class ExtendedSubjectViewSet(FilterWithBooleanMixin, viewsets.ReadOnlyModelViewSet):
@@ -75,13 +115,12 @@ class StatisticsViewSet(FilterWithBooleanMixin, viewsets.ReadOnlyModelViewSet):
 
 
 class AllLanguagesViewSet(FilterWithBooleanMixin, viewsets.ReadOnlyModelViewSet):
-    queryset = Language.objects.distinct('name').filter(~Q(name=''))
+    queryset = Language.objects.distinct("name").filter(~Q(name=""))
     serializer_class = LanguageSerializer
     filterset_fields = []
 
 
 class AllSubjectsViewSet(FilterWithBooleanMixin, viewsets.ReadOnlyModelViewSet):
-    queryset = ExtendedSubject.objects.distinct('name').filter(~Q(name=''))
+    queryset = ExtendedSubject.objects.distinct("name").filter(~Q(name=""))
     serializer_class = ExtendedSubjectSerializer
     filterset_fields = []
-

@@ -3,10 +3,9 @@
 from django.db import migrations
 import urllib.parse
 
+
 class Migration(migrations.Migration):
 
-    dependencies = [
-    ]
+    dependencies = []
 
-    operations = [
-    ]
+    operations = []

@@ -3,10 +3,11 @@
 from django.contrib.postgres.operations import TrigramExtension
 from django.db import migrations
 
+
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('search', '0008_insert_profile_publiczne_lo'),
+        ("search", "0008_insert_profile_publiczne_lo"),
     ]
 
     operations = [
@@ -14,13 +15,13 @@ class Migration(migrations.Migration):
         migrations.RunSQL(
             'CREATE INDEX "search_school_name_idx" '
             'ON "search_school" '
-            'USING GIN (school_name gin_trgm_ops);',
+            "USING GIN (school_name gin_trgm_ops);",
             reverse_sql='DROP INDEX "search_school_name_idx";',
         ),
         migrations.RunSQL(
             'CREATE INDEX "search_school_nickname_idx" '
             'ON "search_school" '
-            'USING GIN (nickname gin_trgm_ops);',
+            "USING GIN (nickname gin_trgm_ops);",
             reverse_sql='DROP INDEX "search_school_nickname_idx";',
         ),
     ]

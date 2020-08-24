@@ -11,118 +11,311 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('search', '0001_initial'),
+        ("search", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Address',
+            name="Address",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('city', models.CharField(max_length=100)),
-                ('postcode', models.CharField(max_length=6, validators=[django.core.validators.RegexValidator(regex='^\\d\\d-\\d\\d\\d$')])),
-                ('district', models.CharField(max_length=100)),
-                ('street', models.CharField(max_length=100)),
-                ('building_nr', models.CharField(max_length=20)),
-                ('longitude', models.FloatField(null=True)),
-                ('latitude', models.FloatField(null=True)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("city", models.CharField(max_length=100)),
+                (
+                    "postcode",
+                    models.CharField(
+                        max_length=6,
+                        validators=[
+                            django.core.validators.RegexValidator(
+                                regex="^\\d\\d-\\d\\d\\d$"
+                            )
+                        ],
+                    ),
+                ),
+                ("district", models.CharField(max_length=100)),
+                ("street", models.CharField(max_length=100)),
+                ("building_nr", models.CharField(max_length=20)),
+                ("longitude", models.FloatField(null=True)),
+                ("latitude", models.FloatField(null=True)),
             ],
         ),
         migrations.CreateModel(
-            name='ContactData',
+            name="ContactData",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('website', models.CharField(max_length=100, null=True)),
-                ('phone', models.CharField(max_length=20, null=True)),
-                ('email', models.CharField(max_length=100, null=True, verbose_name=django.core.validators.EmailValidator())),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("website", models.CharField(max_length=100, null=True)),
+                ("phone", models.CharField(max_length=20, null=True)),
+                (
+                    "email",
+                    models.CharField(
+                        max_length=100,
+                        null=True,
+                        verbose_name=django.core.validators.EmailValidator(),
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='HighSchoolClass',
+            name="HighSchoolClass",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('type', models.CharField(max_length=10)),
-                ('name', models.CharField(max_length=200)),
-                ('year', django.contrib.postgres.fields.ranges.IntegerRangeField()),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("type", models.CharField(max_length=10)),
+                ("name", models.CharField(max_length=200)),
+                ("year", django.contrib.postgres.fields.ranges.IntegerRangeField()),
             ],
         ),
         migrations.CreateModel(
-            name='PrivateInstitutionData',
+            name="PrivateInstitutionData",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('registration_nr', models.CharField(max_length=20)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("registration_nr", models.CharField(max_length=20)),
             ],
         ),
         migrations.CreateModel(
-            name='PublicInstitutionData',
+            name="PublicInstitutionData",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('short_name', models.CharField(max_length=20)),
-                ('institution_name', models.CharField(max_length=200)),
-                ('institution_short_name', models.CharField(max_length=20)),
-                ('institution_type', models.CharField(max_length=100)),
-                ('institution_nr', models.CharField(max_length=20)),
-                ('institution_RSPO', models.CharField(max_length=20)),
-                ('RSPO', models.CharField(max_length=20)),
-                ('institution_regon', models.CharField(max_length=14)),
-                ('regon', models.CharField(max_length=14)),
-                ('data', django.contrib.postgres.fields.jsonb.JSONField(null=True)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("short_name", models.CharField(max_length=20)),
+                ("institution_name", models.CharField(max_length=200)),
+                ("institution_short_name", models.CharField(max_length=20)),
+                ("institution_type", models.CharField(max_length=100)),
+                ("institution_nr", models.CharField(max_length=20)),
+                ("institution_RSPO", models.CharField(max_length=20)),
+                ("RSPO", models.CharField(max_length=20)),
+                ("institution_regon", models.CharField(max_length=14)),
+                ("regon", models.CharField(max_length=14)),
+                ("data", django.contrib.postgres.fields.jsonb.JSONField(null=True)),
             ],
         ),
         migrations.CreateModel(
-            name='Statistics',
+            name="Statistics",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('round', models.IntegerField()),
-                ('points_min', models.FloatField()),
-                ('points_max', models.FloatField()),
-                ('points_avg', models.FloatField()),
-                ('with_competency_test', models.BooleanField(default=False)),
-                ('only_sports_test', models.BooleanField(default=False)),
-                ('high_school_class', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='search.HighSchoolClass')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("round", models.IntegerField()),
+                ("points_min", models.FloatField()),
+                ("points_max", models.FloatField()),
+                ("points_avg", models.FloatField()),
+                ("with_competency_test", models.BooleanField(default=False)),
+                ("only_sports_test", models.BooleanField(default=False)),
+                (
+                    "high_school_class",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="search.HighSchoolClass",
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='School',
+            name="School",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('school_name', models.CharField(max_length=200)),
-                ('nickname', models.CharField(default=None, max_length=50, null=True)),
-                ('school_type', models.CharField(max_length=100)),
-                ('school_type_generalised', models.CharField(max_length=40)),
-                ('student_type', models.CharField(max_length=100)),
-                ('is_special_needs_school', models.BooleanField(default=False)),
-                ('specialised_divisions', django.contrib.postgres.fields.ArrayField(base_field=models.CharField(max_length=100), null=True, size=None)),
-                ('is_public', models.BooleanField()),
-                ('data', django.contrib.postgres.fields.jsonb.JSONField(null=True)),
-                ('address', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='search.Address')),
-                ('contact', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='search.ContactData')),
-                ('private_institution_data', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='search.PrivateInstitutionData')),
-                ('public_institution_data', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='search.PublicInstitutionData')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("school_name", models.CharField(max_length=200)),
+                ("nickname", models.CharField(default=None, max_length=50, null=True)),
+                ("school_type", models.CharField(max_length=100)),
+                ("school_type_generalised", models.CharField(max_length=40)),
+                ("student_type", models.CharField(max_length=100)),
+                ("is_special_needs_school", models.BooleanField(default=False)),
+                (
+                    "specialised_divisions",
+                    django.contrib.postgres.fields.ArrayField(
+                        base_field=models.CharField(max_length=100),
+                        null=True,
+                        size=None,
+                    ),
+                ),
+                ("is_public", models.BooleanField()),
+                ("data", django.contrib.postgres.fields.jsonb.JSONField(null=True)),
+                (
+                    "address",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to="search.Address"
+                    ),
+                ),
+                (
+                    "contact",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="search.ContactData",
+                    ),
+                ),
+                (
+                    "private_institution_data",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        to="search.PrivateInstitutionData",
+                    ),
+                ),
+                (
+                    "public_institution_data",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        to="search.PublicInstitutionData",
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='Language',
+            name="Language",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(choices=[('ang', 'język angielski'), ('franc', 'język francuski'), ('hiszp', 'język hiszpański'), ('niem', 'język niemiecki'), ('ros', 'język rosyjski'), ('wło', 'język włoski'), ('antyk', 'język łaciński i kultura antyczna'), ('język białoruski', 'język białoruski'), ('język litewski', 'język litewski'), ('język ukraiński', 'język ukraiński'), ('język łemkowski', 'język łemkowski'), ('język kaszubski', 'język kaszubski')], max_length=40)),
-                ('nr', models.IntegerField(choices=[(1, 'pierwszy'), (2, 'drugi')])),
-                ('is_bilingual', models.BooleanField(default=False)),
-                ('multiple_levels', models.BooleanField(default=False)),
-                ('high_school_class', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='search.HighSchoolClass')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "name",
+                    models.CharField(
+                        choices=[
+                            ("ang", "język angielski"),
+                            ("franc", "język francuski"),
+                            ("hiszp", "język hiszpański"),
+                            ("niem", "język niemiecki"),
+                            ("ros", "język rosyjski"),
+                            ("wło", "język włoski"),
+                            ("antyk", "język łaciński i kultura antyczna"),
+                            ("język białoruski", "język białoruski"),
+                            ("język litewski", "język litewski"),
+                            ("język ukraiński", "język ukraiński"),
+                            ("język łemkowski", "język łemkowski"),
+                            ("język kaszubski", "język kaszubski"),
+                        ],
+                        max_length=40,
+                    ),
+                ),
+                ("nr", models.IntegerField(choices=[(1, "pierwszy"), (2, "drugi")])),
+                ("is_bilingual", models.BooleanField(default=False)),
+                ("multiple_levels", models.BooleanField(default=False)),
+                (
+                    "high_school_class",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="search.HighSchoolClass",
+                    ),
+                ),
             ],
         ),
         migrations.AddField(
-            model_name='highschoolclass',
-            name='school',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='search.School'),
+            model_name="highschoolclass",
+            name="school",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to="search.School"
+            ),
         ),
         migrations.CreateModel(
-            name='ExtendedSubject',
+            name="ExtendedSubject",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(choices=[('biol', 'biologia'), ('chem', 'chemia'), ('filoz', 'filozofia'), ('fiz', 'fizyka'), ('geogr', 'geografia'), ('hist', 'historia'), ('h.muz.', 'historia muzyki'), ('h.szt.', 'historia sztuki'), ('inf', 'informatyka'), ('pol', 'język polski'), ('mat', 'matematyka'), ('wos', 'wiedza o społeczeństwie'), ('obcy', 'obcy'), ('ang', 'język angielski'), ('franc', 'język francuski'), ('hiszp', 'język hiszpański'), ('niem', 'język niemiecki'), ('ros', 'język rosyjski'), ('wło', 'język włoski'), ('antyk', 'język łaciński i kultura antyczna'), ('język białoruski', 'język białoruski'), ('język litewski', 'język litewski'), ('język ukraiński', 'język ukraiński'), ('język łemkowski', 'język łemkowski'), ('język kaszubski', 'język kaszubski')], max_length=40)),
-                ('high_school_class', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='search.HighSchoolClass')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "name",
+                    models.CharField(
+                        choices=[
+                            ("biol", "biologia"),
+                            ("chem", "chemia"),
+                            ("filoz", "filozofia"),
+                            ("fiz", "fizyka"),
+                            ("geogr", "geografia"),
+                            ("hist", "historia"),
+                            ("h.muz.", "historia muzyki"),
+                            ("h.szt.", "historia sztuki"),
+                            ("inf", "informatyka"),
+                            ("pol", "język polski"),
+                            ("mat", "matematyka"),
+                            ("wos", "wiedza o społeczeństwie"),
+                            ("obcy", "obcy"),
+                            ("ang", "język angielski"),
+                            ("franc", "język francuski"),
+                            ("hiszp", "język hiszpański"),
+                            ("niem", "język niemiecki"),
+                            ("ros", "język rosyjski"),
+                            ("wło", "język włoski"),
+                            ("antyk", "język łaciński i kultura antyczna"),
+                            ("język białoruski", "język białoruski"),
+                            ("język litewski", "język litewski"),
+                            ("język ukraiński", "język ukraiński"),
+                            ("język łemkowski", "język łemkowski"),
+                            ("język kaszubski", "język kaszubski"),
+                        ],
+                        max_length=40,
+                    ),
+                ),
+                (
+                    "high_school_class",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="search.HighSchoolClass",
+                    ),
+                ),
             ],
         ),
     ]
