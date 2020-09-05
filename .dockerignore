@@ -1,2 +1,4 @@
 .git/objects
 Dockerfile
+venv/
+.env
