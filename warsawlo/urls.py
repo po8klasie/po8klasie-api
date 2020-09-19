@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
+from graphene_django.views import GraphQLView
 from rest_framework.schemas import get_schema_view
 
 urlpatterns = [
@@ -27,4 +28,5 @@ urlpatterns = [
         ),
         name="openapi-schema",
     ),
+    path("graphql", GraphQLView.as_view(graphiql=True)),
 ]

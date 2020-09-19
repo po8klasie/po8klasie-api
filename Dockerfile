@@ -6,7 +6,8 @@ RUN apk update && apk add \
     g++ \
     linux-headers \
     make \
-    postgresql-dev
+    postgresql-dev \
+    libffi-dev
 
 RUN python -m venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
