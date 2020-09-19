@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     "django_filters",
     "search",
     "django_probes",
+    "graphene_django",
 ]
 
 
@@ -163,6 +164,8 @@ LOGGING = {
     },
     "loggers": {"testlogger": {"handlers": ["console"], "level": "INFO",}},
 }
+
+GRAPHENE = {"SCHEMA": "warsawlo.schema.schema"}
 
 SESSION_COOKIE_SECURE = os.environ.get("SECURE_COOKIES", default="True") == "True"
 CSRF_COOKIE_SECURE = os.environ.get("SECURE_COOKIES", default="True") == "True"
