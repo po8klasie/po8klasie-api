@@ -1,5 +1,6 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
+from graphene_django.views import GraphQLView
 
 from . import views
 
@@ -29,4 +30,5 @@ router.register(
 
 urlpatterns = [
     path("", include(router.urls)),
+    path("graphql", GraphQLView.as_view(graphiql=True))
 ]
