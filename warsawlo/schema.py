@@ -3,6 +3,7 @@ from graphene import relay
 import graphene
 from graphene_django import DjangoObjectType
 from graphene_django.filter import DjangoFilterConnectionField
+from django.contrib.postgres.search import TrigramSimilarity
 
 from search.models import (
     Address,
@@ -116,6 +117,54 @@ class StatisticsNode(DjangoObjectType):
         interfaces = (relay.Node,)
 
 
+class CharInFilter(django_filters.BaseInFilter, django_filters.CharFilter):
+    pass
+
+
+class SearchFilter(django_filters.FilterSet):
+    QUERY_FIELD = "school_name"
+    SCHOOL_TYPE_GENERALISED = "szkoła ponadpodstawowa"
+
+    class Meta:
+        model = School
+        fields = ["school_type", "is_public"]
+
+    query = django_filters.CharFilter(method="query_filter")
+
+    district = django_filters.CharFilter(field_name="address__district")
+
+    # TODO: Filter input as list not string
+    # or filtering
+    available_extended_subjects = CharInFilter(
+        field_name="highschoolclass__extendedsubject__name"
+    )
+
+    def query_filter(self, queryset, value):
+        return (
+            queryset.annotate(similarity=TrigramSimilarity(self.QUERY_FIELD, value))
+            .filter(similarity__gte=0.05)
+            .order_by("-similarity")
+        )
+
+    @property
+    def qs(self):
+        parent = super().qs
+        return parent.filter(school_type_generalised=self.SCHOOL_TYPE_GENERALISED)
+
+
+class SearchNode(DjangoObjectType):
+    class Meta:
+        model = School
+        fields = "__all__"
+        interfaces = (relay.Node,)
+        filterset_class = SearchFilter
+
+    school_id = graphene.Int()
+
+    def resolve_school_id(self):
+        return self.id
+
+
 class Query(graphene.ObjectType):
     address = relay.Node.Field(AddressNode)
     all_addresses = DjangoFilterConnectionField(AddressNode)
@@ -145,6 +194,8 @@ class Query(graphene.ObjectType):
 
     statistics = relay.Node.Field(StatisticsNode)
     all_statistics = DjangoFilterConnectionField(StatisticsNode)
+
+    search = DjangoFilterConnectionField(SearchNode)
 
 
 schema = graphene.Schema(query=Query)
