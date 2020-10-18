@@ -84,6 +84,9 @@ class SchoolNode(DjangoObjectType):
         interfaces = (relay.Node,)
         filterset_class = SchoolFilter
 
+    def resolve_school_id(self):
+        return self.id
+
 
 class HighSchoolClassNode(DjangoObjectType):
     class Meta:
