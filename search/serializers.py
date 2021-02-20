@@ -49,6 +49,13 @@ class SchoolSerializer(serializers.ModelSerializer):
         return HighSchoolClassSerializer(classes, many=True, context=self.context).data
 
 
+class SchoolLocationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = School
+        fields = ["id", "school_name", "school_type", "address"]
+        depth = 2
+
+
 class ExtendedSubjectSerializer(serializers.ModelSerializer):
     full_name = serializers.SerializerMethodField()
 

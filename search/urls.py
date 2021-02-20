@@ -14,6 +14,7 @@ router.register(r"subjects", views.AllSubjectsViewSet, basename="subjects")
 router.register(r"stats", views.StatisticsViewSet, basename="stats")
 router.register(r"highschool", views.HighSchoolViewSet, basename="highschool")
 router.register(r"school", views.SchoolViewSet, basename="school")
+router.register(r"school-location", views.SchoolLocationViewSet, basename="school-location")
 router.register(r"address", views.AddressViewSet, basename="address")
 router.register(r"contact", views.ContactViewSet, basename="contactdata")
 router.register(

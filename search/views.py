@@ -15,6 +15,7 @@ from search.models import (
 )
 from search.serializers import (
     SchoolSerializer,
+    SchoolLocationSerializer,
     ExtendedSubjectSerializer,
     LanguageSerializer,
     StatisticsSerializer,
@@ -30,6 +31,17 @@ class SchoolViewSet(FilterWithBooleanAndSearchMixin, viewsets.ReadOnlyModelViewS
     queryset = School.objects.all()
     serializers = SchoolSerializer
     serializer_class = SchoolSerializer
+    filterset_fields = [
+        f.name
+        for f in School._meta.fields
+        if f.name not in ["specialised_divisions", "data", "school_name"]
+    ]
+
+class SchoolLocationViewSet(FilterWithBooleanAndSearchMixin, viewsets.ReadOnlyModelViewSet):
+    queryset = School.objects.all()
+    serializers = SchoolSerializer
+    serializer_class = SchoolLocationSerializer
+    pagination_class = None
     filterset_fields = [
         f.name
         for f in School._meta.fields
