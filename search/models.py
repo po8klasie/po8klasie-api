@@ -86,6 +86,22 @@ class HighSchoolClass(models.Model):
         return ",".join([self.type, self.name])
 
 
+class LanguageName(models.TextChoices):
+    ANG = "ang", "język angielski"
+    FRA = "fra", "język francuski"
+    HISZ = "hisz", "język hiszpański"
+    NIEM = "niem", "język niemiecki"
+    POR = "por", "język portugalski"
+    ROS = "ros", "język rosyjski"
+    WLO = "wlo", "język włoski"
+    LAT = "antyk", "język łaciński i kultura antyczna"
+    BIA = "język białoruski", "język białoruski"
+    LIT = "język litewski", "język litewski"
+    UKR = "język ukraiński", "język ukraiński"
+    LEM = "język łemkowski", "język łemkowski"
+    KAS = "język kaszubski", "język kaszubski"
+
+
 class Language(models.Model):
     languages = [
         ("ang", "język angielski"),
@@ -114,6 +130,22 @@ class Language(models.Model):
 
     def __str__(self):
         return ",".join([self.name, self.high_school_class.school.school_name])
+
+
+class SubjectName(models.TextChoices):
+    BIOL = "biol", "biologia"
+    CHEM = "chem", "chemia"
+    FILOZ = "filoz", "filozofia"
+    FIZ = "fiz", "fizyka"
+    GEOGR = "geogr", "geografia"
+    HIST = "hist", "historia"
+    HMUZ = "h.muz.", "historia muzyki"
+    HSZT = "h.szt.", "historia sztuki"
+    INF = "inf", "informatyka"
+    POL = "pol", "język polski"
+    MAT = "mat", "matematyka"
+    WOS = "wos", "wiedza o społeczeństwie"
+    OBCY = "obcy", "język obcy"
 
 
 class ExtendedSubject(models.Model):
