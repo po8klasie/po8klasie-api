@@ -1,7 +1,6 @@
 from django.core.validators import RegexValidator, EmailValidator
 from django.db import models
 from django.contrib.postgres.fields import JSONField, IntegerRangeField
-from django.contrib.postgres.fields import ArrayField
 
 
 class Address(models.Model):
@@ -51,17 +50,26 @@ class PrivateInstitutionData(models.Model):
     registration_nr = models.CharField(max_length=20)
 
 
+class SchoolType(models.TextChoices):
+    LO = "liceum ogólnokształcące"
+    TECH = "technikum"
+    BRAN = "szkoła branżowa I stopnia"
+    SPEC = "szkoła specjalna przysposabiająca do pracy"
+    PRZED = "przedszkole"
+    SP = "szkoła podstawowa"
+    SPART = "szkoła podstawowa artystyczna"
+    POLIC = "szkoła policealna"
+
+
 class School(models.Model):
     school_name = models.CharField(max_length=200)
     # eg. "Batory", "Poniatówka"
-    nickname = models.CharField(max_length=50, default=None, null=True)
-    school_type = models.CharField(max_length=100)
-    school_type_generalised = models.CharField(max_length=40)
-    student_type = models.CharField(max_length=100)
+    nickname = models.CharField(max_length=50, blank=True, default="")
+    school_type = models.CharField(max_length=100, choices=SchoolType.choices)
+    student_type = models.CharField(max_length=100, blank=True)
     is_special_needs_school = models.BooleanField(default=False)
     address = models.ForeignKey(Address, on_delete=models.CASCADE)
     contact = models.ForeignKey(ContactData, on_delete=models.CASCADE, null=True)
-    specialised_divisions = ArrayField(models.CharField(max_length=100), null=True)
     is_public = models.BooleanField()
     public_institution_data = models.ForeignKey(
         PublicInstitutionData, on_delete=models.SET_NULL, null=True
@@ -69,10 +77,10 @@ class School(models.Model):
     private_institution_data = models.ForeignKey(
         PrivateInstitutionData, on_delete=models.SET_NULL, null=True
     )
-    data = JSONField(null=True)
+    data = JSONField(default=dict)
 
     def __str__(self):
-        return ",".join([self.school_name, self.school_type_generalised])
+        return self.school_name
 
 
 class HighSchoolClass(models.Model):
