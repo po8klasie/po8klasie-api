@@ -8,3 +8,4 @@ envname/
 static/*
 venv/
 .env
+.idea/
