@@ -31,31 +31,21 @@ class SchoolViewSet(FilterWithBooleanAndSearchMixin, viewsets.ReadOnlyModelViewS
     serializers = SchoolSerializer
     serializer_class = SchoolSerializer
     filterset_fields = [
-        f.name
-        for f in School._meta.fields
-        if f.name not in ["specialised_divisions", "data", "school_name"]
+        f.name for f in School._meta.fields if f.name not in ["data", "school_name"]
     ]
 
 
 class HighSchoolViewSet(FilterWithBooleanMixin, viewsets.ReadOnlyModelViewSet):
     queryset = School.objects.filter(school_type="liceum ogólnokształcące")
     serializer_class = SchoolSerializer
-    filterset_fields = [
-        f.name
-        for f in School._meta.fields
-        if f.name not in ["specialised_divisions", "data"]
-    ]
+    filterset_fields = [f.name for f in School._meta.fields if f.name != "data"]
     search_fields = ["school_name", "school_type"]
 
 
 class TechnikumViewSet(FilterWithBooleanMixin, viewsets.ReadOnlyModelViewSet):
     queryset = School.objects.filter(school_type="technikum")
     serializer_class = SchoolSerializer
-    filterset_fields = [
-        f.name
-        for f in School._meta.fields
-        if f.name not in ["specialised_divisions", "data"]
-    ]
+    filterset_fields = [f.name for f in School._meta.fields if f.name != "data"]
 
 
 class AddressViewSet(FilterWithBooleanMixin, viewsets.ReadOnlyModelViewSet):
