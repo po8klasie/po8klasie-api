@@ -19,31 +19,32 @@ class Address(models.Model):
 
 
 class ContactData(models.Model):
-    website = models.CharField(max_length=100, null=True)
-    phone = models.CharField(max_length=20, null=True)
-    email = models.CharField(EmailValidator(), max_length=100, null=True)
+    website = models.CharField(max_length=100, blank=True, default="")
+    phone = models.CharField(max_length=20, blank=True, default="")
+    email = models.CharField(EmailValidator(), max_length=100, blank=True, default="")
 
     def __str__(self):
         return ",".join([self.website, self.phone, self.email])
 
 
 class PublicInstitutionData(models.Model):
-    # institution = placówka
-    short_name = models.CharField(max_length=20)
-    institution_name = models.CharField(max_length=200)
-    institution_short_name = models.CharField(max_length=20)
-    institution_type = models.CharField(max_length=100)
-    institution_nr = models.CharField(max_length=20)
-    institution_RSPO = models.CharField(max_length=20)
-    RSPO = models.CharField(max_length=20)
-    institution_regon = models.CharField(max_length=14)
-    regon = models.CharField(max_length=14)
-    data = JSONField(null=True)
+    """
+    Institution (pl. placówka) – a bigger entity which school is a part of eg. "Zespół Szkół Zawodowych..."
+    """
+
+    institution_name = models.CharField(max_length=200, blank=True)
+    institution_short_name = models.CharField(max_length=20, blank=True)
+    institution_type = models.CharField(max_length=100, blank=True)
+    institution_nr = models.CharField(max_length=20, blank=True)
+    institution_RSPO = models.CharField(max_length=20, blank=True)
+    institution_regon = models.CharField(max_length=14, blank=True)
+    short_name = models.CharField(max_length=20, blank=True)
+    RSPO = models.CharField(max_length=20, blank=True)
+    regon = models.CharField(max_length=14, blank=True)
+    data = JSONField(default=dict)
 
     def __str__(self):
-        return ",".join(
-            [self.short_name, self.institution_short_name, self.institution_nr]
-        )
+        return self.institution_name
 
 
 class PrivateInstitutionData(models.Model):
@@ -91,7 +92,7 @@ class HighSchoolClass(models.Model):
     year = IntegerRangeField()
 
     def __str__(self):
-        return ",".join([self.type, self.name])
+        return f"{self.type}, {self.name}"
 
 
 class LanguageName(models.TextChoices):
