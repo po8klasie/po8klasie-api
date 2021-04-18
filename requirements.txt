@@ -9,7 +9,7 @@ django-filter==2.2.0
 django-probes==1.4.0
 django-rest-swagger==2.2.0
 djangorestframework==3.11.0
-graphene-django==2.13
+graphene-django==2.15
 gunicorn==20.0.4
 idna==2.8
 itypes==1.1.0
