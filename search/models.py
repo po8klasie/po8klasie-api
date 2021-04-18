@@ -1,7 +1,6 @@
 from django.core.validators import RegexValidator, EmailValidator
 from django.db import models
 from django.contrib.postgres.fields import JSONField, IntegerRangeField
-from django.contrib.postgres.fields import ArrayField
 
 
 class Address(models.Model):
@@ -20,48 +19,58 @@ class Address(models.Model):
 
 
 class ContactData(models.Model):
-    website = models.CharField(max_length=100, null=True)
-    phone = models.CharField(max_length=20, null=True)
-    email = models.CharField(EmailValidator(), max_length=100, null=True)
+    website = models.CharField(max_length=100, blank=True, default="")
+    phone = models.CharField(max_length=20, blank=True, default="")
+    email = models.CharField(EmailValidator(), max_length=100, blank=True, default="")
 
     def __str__(self):
         return ",".join([self.website, self.phone, self.email])
 
 
 class PublicInstitutionData(models.Model):
-    # institution = placówka
-    short_name = models.CharField(max_length=20)
-    institution_name = models.CharField(max_length=200)
-    institution_short_name = models.CharField(max_length=20)
-    institution_type = models.CharField(max_length=100)
-    institution_nr = models.CharField(max_length=20)
-    institution_RSPO = models.CharField(max_length=20)
-    RSPO = models.CharField(max_length=20)
-    institution_regon = models.CharField(max_length=14)
-    regon = models.CharField(max_length=14)
-    data = JSONField(null=True)
+    """
+    Institution (pl. placówka) – a bigger entity which school is a part of eg. "Zespół Szkół Zawodowych..."
+    """
+
+    institution_name = models.CharField(max_length=200, blank=True)
+    institution_short_name = models.CharField(max_length=20, blank=True)
+    institution_type = models.CharField(max_length=100, blank=True)
+    institution_nr = models.CharField(max_length=20, blank=True)
+    institution_RSPO = models.CharField(max_length=20, blank=True)
+    institution_regon = models.CharField(max_length=14, blank=True)
+    short_name = models.CharField(max_length=20, blank=True)
+    RSPO = models.CharField(max_length=20, blank=True)
+    regon = models.CharField(max_length=14, blank=True)
+    data = JSONField(default=dict)
 
     def __str__(self):
-        return ",".join(
-            [self.short_name, self.institution_short_name, self.institution_nr]
-        )
+        return self.institution_name
 
 
 class PrivateInstitutionData(models.Model):
     registration_nr = models.CharField(max_length=20)
 
 
+class SchoolType(models.TextChoices):
+    LO = "liceum ogólnokształcące"
+    TECH = "technikum"
+    BRAN = "szkoła branżowa I stopnia"
+    SPEC = "szkoła specjalna przysposabiająca do pracy"
+    PRZED = "przedszkole"
+    SP = "szkoła podstawowa"
+    SPART = "szkoła podstawowa artystyczna"
+    POLIC = "szkoła policealna"
+
+
 class School(models.Model):
     school_name = models.CharField(max_length=200)
     # eg. "Batory", "Poniatówka"
-    nickname = models.CharField(max_length=50, default=None, null=True)
-    school_type = models.CharField(max_length=100)
-    school_type_generalised = models.CharField(max_length=40)
-    student_type = models.CharField(max_length=100)
+    nickname = models.CharField(max_length=50, blank=True, default="")
+    school_type = models.CharField(max_length=100, choices=SchoolType.choices)
+    student_type = models.CharField(max_length=100, blank=True)
     is_special_needs_school = models.BooleanField(default=False)
     address = models.ForeignKey(Address, on_delete=models.CASCADE)
     contact = models.ForeignKey(ContactData, on_delete=models.CASCADE, null=True)
-    specialised_divisions = ArrayField(models.CharField(max_length=100), null=True)
     is_public = models.BooleanField()
     public_institution_data = models.ForeignKey(
         PublicInstitutionData, on_delete=models.SET_NULL, null=True
@@ -69,10 +78,10 @@ class School(models.Model):
     private_institution_data = models.ForeignKey(
         PrivateInstitutionData, on_delete=models.SET_NULL, null=True
     )
-    data = JSONField(null=True)
+    data = JSONField(default=dict)
 
     def __str__(self):
-        return ",".join([self.school_name, self.school_type_generalised])
+        return self.school_name
 
 
 class HighSchoolClass(models.Model):
@@ -83,7 +92,23 @@ class HighSchoolClass(models.Model):
     year = IntegerRangeField()
 
     def __str__(self):
-        return ",".join([self.type, self.name])
+        return f"{self.type}, {self.name}"
+
+
+class LanguageName(models.TextChoices):
+    ANG = "ang", "język angielski"
+    FRA = "fra", "język francuski"
+    HISZ = "hisz", "język hiszpański"
+    NIEM = "niem", "język niemiecki"
+    POR = "por", "język portugalski"
+    ROS = "ros", "język rosyjski"
+    WLO = "wlo", "język włoski"
+    LAT = "antyk", "język łaciński i kultura antyczna"
+    BIA = "język białoruski", "język białoruski"
+    LIT = "język litewski", "język litewski"
+    UKR = "język ukraiński", "język ukraiński"
+    LEM = "język łemkowski", "język łemkowski"
+    KAS = "język kaszubski", "język kaszubski"
 
 
 class Language(models.Model):
@@ -114,6 +139,22 @@ class Language(models.Model):
 
     def __str__(self):
         return ",".join([self.name, self.high_school_class.school.school_name])
+
+
+class SubjectName(models.TextChoices):
+    BIOL = "biol", "biologia"
+    CHEM = "chem", "chemia"
+    FILOZ = "filoz", "filozofia"
+    FIZ = "fiz", "fizyka"
+    GEOGR = "geogr", "geografia"
+    HIST = "hist", "historia"
+    HMUZ = "h.muz.", "historia muzyki"
+    HSZT = "h.szt.", "historia sztuki"
+    INF = "inf", "informatyka"
+    POL = "pol", "język polski"
+    MAT = "mat", "matematyka"
+    WOS = "wos", "wiedza o społeczeństwie"
+    OBCY = "obcy", "język obcy"
 
 
 class ExtendedSubject(models.Model):
