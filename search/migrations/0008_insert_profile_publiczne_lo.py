@@ -5,10 +5,15 @@ from django.db import migrations
 import csv
 import re
 from psycopg2.extras import NumericRange
-from search.models import School, HighSchoolClass, ExtendedSubject, Statistics, Language
 
 
 def load(apps, schema):
+    School = apps.get_model("search", "School")
+    HighSchoolClass = apps.get_model("search", "HighSchoolClass")
+    ExtendedSubject = apps.get_model("search", "ExtendedSubject")
+    Statistics = apps.get_model("search", "Statistics")
+    Language = apps.get_model("search", "Language")
+
     with open("csvs/Punkty 2018_2019 -  .csv", newline="") as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=",")
         row_number = 0
@@ -17,7 +22,6 @@ def load(apps, schema):
             if row_number > 4 and row[1] == "LO" and "Branżowa" not in row[2]:
                 name = row[2].strip()
                 school = School.objects.get(school_name=name)
-                print(school.school_name + ":" + str(school.id))
                 hss = HighSchoolClass()
                 hss.school = school
                 class_name = row[3]
@@ -54,7 +58,7 @@ def load(apps, schema):
                 for (k, v) in stats.items():
                     stats[k] = re.sub(",", ".", v)
                     if "laur" in v.lower():
-                        stats[k] = Statistics.LAUREAT
+                        stats[k] = -1
                     elif "**" in v:
                         st.with_competency_test = True
                         stats[k] = re.sub("\\*", "", stats[k])
