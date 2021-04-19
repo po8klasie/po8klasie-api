@@ -57,7 +57,7 @@ class ExtendedSubjectSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
     def get_full_name(self, obj):
-        return obj.name.label
+        return obj.get_name_display()
 
 
 class LanguageSerializer(serializers.ModelSerializer):
