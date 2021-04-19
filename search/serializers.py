@@ -57,10 +57,7 @@ class ExtendedSubjectSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
     def get_full_name(self, obj):
-        full_name = dict(ExtendedSubject.subjects).get(obj.name, None)
-        if full_name is None:
-            full_name = dict(Language.languages).get(obj.name, "")
-        return full_name
+        return obj.name.label
 
 
 class LanguageSerializer(serializers.ModelSerializer):
@@ -71,7 +68,7 @@ class LanguageSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
     def get_full_name(self, obj):
-        return dict(Language.languages).get(obj.name, "")
+        return obj.name.label
 
 
 class StatisticsSerializer(serializers.ModelSerializer):

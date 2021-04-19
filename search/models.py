@@ -84,15 +84,29 @@ class School(models.Model):
         return self.school_name
 
 
+class HighSchoolClassType(models.TextChoices):
+    O = "O", "ogólnodostępny"
+    MS = "MS", "mistrzostwa sportowego"
+    D = "D", "dwujęzyczny"
+    M = "M", "międzynarodowy"
+    DW = "DW", "wstępny"
+    S = "S", "sportowy"
+    IO = "I-o", "integracyjny cz. ogólnodostępna"
+    II = (
+        "I-i",
+        "integracyjny cz. dla kandydatów z orzeczeniem o potrzebie kształcenia specjalnego",
+    )
+    PW = "PW", "przygotowania wojskowego"
+
+
 class HighSchoolClass(models.Model):
-    # O - ogólnokształcące, MS - mistrzostwa sportowego
-    type = models.CharField(max_length=10)
+    type = models.CharField(choices=HighSchoolClassType.choices, max_length=3)
     name = models.CharField(max_length=200)
     school = models.ForeignKey(School, on_delete=models.CASCADE)
     year = IntegerRangeField()
 
     def __str__(self):
-        return f"{self.type}, {self.name}"
+        return f"{self.type.label}, {self.name}"
 
 
 class LanguageName(models.TextChoices):
@@ -112,26 +126,8 @@ class LanguageName(models.TextChoices):
 
 
 class Language(models.Model):
-    languages = [
-        ("ang", "język angielski"),
-        ("fra", "język francuski"),
-        ("franc", "język francuski"),
-        ("hisz", "język hiszpański"),
-        ("hiszp", "język hiszpański"),
-        ("niem", "język niemiecki"),
-        ("por", "język portugalski"),
-        ("ros", "język rosyjski"),
-        ("wlo", "język włoski"),
-        ("wło", "język włoski"),
-        ("antyk", "język łaciński i kultura antyczna"),
-        ("język białoruski", "język białoruski"),
-        ("język litewski", "język litewski"),
-        ("język ukraiński", "język ukraiński"),
-        ("język łemkowski", "język łemkowski"),
-        ("język kaszubski", "język kaszubski"),
-    ]
     high_school_class = models.ForeignKey(HighSchoolClass, on_delete=models.CASCADE)
-    name = models.CharField(choices=languages, max_length=40)
+    name = models.CharField(choices=LanguageName.choices, max_length=40)
     # pierwszy język obcy/drugi język obcy
     nr = models.IntegerField(choices=[(1, "pierwszy"), (2, "drugi")])
     is_bilingual = models.BooleanField(default=False)
@@ -158,24 +154,10 @@ class SubjectName(models.TextChoices):
 
 
 class ExtendedSubject(models.Model):
-    subjects = [
-        ("biol", "biologia"),
-        ("chem", "chemia"),
-        ("filoz", "filozofia"),
-        ("fiz", "fizyka"),
-        ("geogr", "geografia"),
-        ("hist", "historia"),
-        ("h.muz.", "historia muzyki"),
-        ("h.szt.", "historia sztuki"),
-        ("inf", "informatyka"),
-        ("pol", "język polski"),
-        ("mat", "matematyka"),
-        ("wos", "wiedza o społeczeństwie"),
-        ("obcy", "obcy"),
-    ]
-
     high_school_class = models.ForeignKey(HighSchoolClass, on_delete=models.CASCADE)
-    name = models.CharField(choices=subjects + Language.languages, max_length=40)
+    name = models.CharField(
+        choices=SubjectName.choices + LanguageName.choices, max_length=40
+    )
 
     def __str__(self):
         return ",".join([self.name, self.high_school_class.school.school_name])
