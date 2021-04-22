@@ -3,10 +3,13 @@
 from django.db import migrations
 
 import csv
-from search.models import School, PublicInstitutionData, Address, ContactData
 
 
 def load_data(apps, schema_editor):
+    School = apps.get_model("search", "School")
+    PublicInstitutionData = apps.get_model("search", "PublicInstitutionData")
+    Address = apps.get_model("search", "Address")
+    ContactData = apps.get_model("search", "ContactData")
     with open("csvs/publiczne.csv", newline="") as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=",")
         row_number = 0

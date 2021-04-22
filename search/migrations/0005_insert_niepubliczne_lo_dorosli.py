@@ -2,10 +2,12 @@
 
 from django.db import migrations
 import csv
-from search.models import School, PrivateInstitutionData, Address, ContactData
 
 
 def load_data_private_lo_adult(apps, schema):
+    School = apps.get_model("search", "School")
+    PrivateInstitutionData = apps.get_model("search", "PrivateInstitutionData")
+    Address = apps.get_model("search", "Address")
     with open("csvs/niepubliczne_lo_dorosli.csv", newline="") as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=",")
         row_number = 0
@@ -14,7 +16,6 @@ def load_data_private_lo_adult(apps, schema):
                 row_number += 1
             else:
                 row_number += 1
-                print(f"row {row_number} inserted")
 
                 school = School()
                 address = Address()
