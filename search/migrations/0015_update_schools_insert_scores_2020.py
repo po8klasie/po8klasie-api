@@ -22,6 +22,8 @@ def update_school_data(apps):
             school.school_name = item.get("Nazwa szkoły").strip()
             school.school_type = item.get("Typ szkoły (LO/LP/TECH/BR1St/LU/TU/PS)")
             school.is_public = item.get("Uprawnienia publiczne") == "szkoła publiczna"
+            school.address.save()
+            school.save()
 
 
 def insert_scores(apps):
@@ -39,6 +41,8 @@ def insert_scores(apps):
         except HighSchoolClass.DoesNotExist:
             continue
         else:
+            hsc.name = item.get("school_class").strip()
+            hsc.save()
             Statistics.objects.create(
                 high_school_class=hsc,
                 points_min=float(item.get("points_min").replace(",", ".")),
@@ -54,8 +58,8 @@ def load_data(apps, schema_editor):
 
 
 def reverse(apps, schema_editor):
-    HighSchoolClass = apps.get_model("search", "HighSchoolClass")
-    HighSchoolClass.objects.filter(year=(2020, 2022)).delete()
+    Statistics = apps.get_model("search", "Statistics")
+    Statistics.objects.filter(high_school_class__year=(2020, 2022)).delete()
 
 
 class Migration(migrations.Migration):
