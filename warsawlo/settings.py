@@ -64,6 +64,7 @@ INSTALLED_APPS = [
     "django_filters",
     "search",
     "django_probes",
+    "graphene_django",
 ]
 
 
@@ -116,9 +117,15 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
-    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",},
-    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",},
-    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",},
+    {
+        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
+    },
+    {
+        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
+    },
+    {
+        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
+    },
 ]
 
 # Internationalization
@@ -137,7 +144,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
-STATIC_URL = "/static/"
+STATIC_URL = "/static-django/"
 # location where django collect all static files
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
@@ -164,15 +171,25 @@ LOGGING = {
         "simple": {"format": "%(levelname)s %(message)s"},
     },
     "handlers": {
-        "null": {"level": "DEBUG", "class": "logging.NullHandler",},
+        "null": {
+            "level": "DEBUG",
+            "class": "logging.NullHandler",
+        },
         "console": {
             "level": "DEBUG",
             "class": "logging.StreamHandler",
             "formatter": "verbose",
         },
     },
-    "loggers": {"testlogger": {"handlers": ["console"], "level": "INFO",}},
+    "loggers": {
+        "testlogger": {
+            "handlers": ["console"],
+            "level": "INFO",
+        }
+    },
 }
+
+GRAPHENE = {"SCHEMA": "search.schema.schema"}
 
 SESSION_COOKIE_SECURE = os.environ.get("SECURE_COOKIES", default="True") == "True"
 CSRF_COOKIE_SECURE = os.environ.get("SECURE_COOKIES", default="True") == "True"

@@ -25,6 +25,8 @@ docker-compose up -d --build # build and start containers
 docker-compose exec web python manage.py migrate --noinput # run migrations
 ```
 
+The application should be available at `127.0.0.1:80`.
+
 #### Linter
 We use [black](https://github.com/psf/black) autoformatter and flake8. 
 
