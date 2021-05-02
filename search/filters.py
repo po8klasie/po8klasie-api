@@ -8,7 +8,14 @@ from django_filters import (
     MultipleChoiceFilter,
     NumberFilter,
 )
-from search.models import School, SchoolType, HighSchoolClass, ExtendedSubject, Address
+from search.models import (
+    School,
+    SchoolType,
+    HighSchoolClass,
+    SubjectName,
+    LanguageName,
+    Address,
+)
 
 
 def is_regon(id):
@@ -68,7 +75,7 @@ class SchoolFilter(FilterSet):
 
     extended_subjects = MultipleChoiceFilter(
         field_name="highschoolclass__extendedsubject__name",
-        choices=ExtendedSubject.subjects,
+        choices=SubjectName.choices + LanguageName.choices,
         method="extended_subjects_filter",
     )
 

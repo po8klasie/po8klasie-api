@@ -5,9 +5,17 @@ on: [pull_request]
 jobs:
   test-building:
     runs-on: ubuntu-latest
+    env:
+      COMPOSE_FILE: ./docker-compose.ci.yml
 
     steps:
     - uses: actions/checkout@v2.1.0
+
+    - name: Build docker images
+      run: docker-compose build
+
+    - name: Run linter & tests
+      run: docker-compose run linter-and-tests
 
     - uses: docker/build-push-action@v1
       with:

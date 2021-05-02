@@ -1,0 +1,27 @@
+version: "3.7"
+services:
+
+  linter-and-tests:
+    build:
+      context: .
+    environment:
+      DJANGO_SETTINGS_MODULE: warsawlo.settings
+      DJANGO_DEBUG: "True"
+      DJANGO_ALLOWED_HOSTS: "localhost 127.0.0.1"
+      DJANGO_SECRET_KEY: secret
+      SECURE_COOKIES: "True"
+      SQL_ENGINE: django.db.backends.postgresql
+      SQL_DATABASE: warsawlo
+      SQL_USER: warsawlo
+      SQL_PASSWORD: warsawlo
+      SQL_HOST: "db"
+    depends_on:
+      - db
+    command: [ "sh /opt/warsawlo/entrypoint.ci.sh" ]
+
+  db:
+    image: postgres:12.2
+    environment:
+      POSTGRES_USER: warsawlo
+      POSTGRES_PASSWORD: warsawlo
+      POSTGRES_DB: warsawlo

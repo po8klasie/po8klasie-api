@@ -1,4 +1,5 @@
 asgiref==3.2.3
+black==20.8b1
 certifi==2019.11.28
 chardet==3.0.4
 coreapi==2.3.3
@@ -10,6 +11,7 @@ django-probes==1.4.0
 django-rest-swagger==2.2.0
 djangorestframework==3.11.0
 factory-boy==3.2.0
+flake8==3.9.0
 graphene-django==2.15
 gunicorn==20.0.4
 idna==2.8
