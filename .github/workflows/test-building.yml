@@ -5,9 +5,6 @@ on: [ pull_request ]
 jobs:
   test-building:
     runs-on: ubuntu-latest
-    env:
-      COMPOSE_FILE: docker-compose.ci.yml
-
     steps:
       - uses: actions/checkout@v2.1.0
 
@@ -19,8 +16,8 @@ jobs:
           images: |
             warsawlo/warsawlo-django
           tags: |
-            type=ref,event=pr
             type=sha
+            type=ref,event=pr
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
@@ -34,4 +31,7 @@ jobs:
           load: true
 
       - name: Run linter & tests
+        env:
+          COMPOSE_FILE: docker-compose.ci.yml
+          DOCKER_IMAGE: ${{ fromJson(steps.meta.outputs.bake-file).target.ghaction-docker-meta.tags[0] }}
         run: docker-compose run linter-and-tests
