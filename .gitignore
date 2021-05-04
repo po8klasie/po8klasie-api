@@ -9,3 +9,4 @@ static/*
 venv/
 .env
 .idea/
+docker-compose.local.yml
