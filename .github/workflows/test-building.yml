@@ -1,34 +1,37 @@
 name: Test building
 
-on: [pull_request]
+on: [ pull_request ]
 
 jobs:
   test-building:
     runs-on: ubuntu-latest
     env:
-      COMPOSE_FILE: ./docker-compose.ci.yml
+      COMPOSE_FILE: docker-compose.ci.yml
 
     steps:
+      - uses: actions/checkout@v2.1.0
 
-    # https://github.com/docker/build-push-action/blob/master/docs/advanced/tags-labels.md
-    - name: Docker meta
-      id: meta
-      uses: crazy-max/ghaction-docker-meta@v2
-      with:
-        images: warsawlo/warsawlo-django
-        tags: |
+      # https://github.com/docker/build-push-action/blob/master/docs/advanced/tags-labels.md
+      - name: Docker meta
+        id: meta
+        uses: crazy-max/ghaction-docker-meta@v2
+        with:
+          images: |
+            warsawlo/warsawlo-django
+          tags: |
             type=ref,event=pr
             type=sha
 
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v1
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
 
-    - name: Build and push
-      uses: docker/build-push-action@v2
-      with:
-        tags: ${{ steps.meta.outputs.tags }}
-        labels: ${{ steps.meta.outputs.labels }}
-        push: false
+      - name: Build and push
+        uses: docker/build-push-action@v2
+        with:
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          push: false
+          load: true
 
-    - name: Run linter & tests
-      run: docker-compose run linter-and-tests
+      - name: Run linter & tests
+        run: docker-compose run linter-and-tests
