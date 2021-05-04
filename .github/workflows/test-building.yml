@@ -11,12 +11,6 @@ jobs:
     steps:
     - uses: actions/checkout@v2.1.0
 
-    - name: Build docker images
-      run: docker-compose build
-
-    - name: Run linter & tests
-      run: docker-compose run linter-and-tests
-
     - uses: docker/build-push-action@v1
       with:
         username: ${{ secrets.DOCKER_USERNAME }}
@@ -25,3 +19,6 @@ jobs:
         tag_with_ref: true
         tag_with_sha: true
         push: false
+
+    - name: Run linter & tests
+      run: docker-compose run linter-and-tests

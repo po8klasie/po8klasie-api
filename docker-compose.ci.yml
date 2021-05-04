@@ -2,8 +2,7 @@ version: "3.7"
 services:
 
   linter-and-tests:
-    build:
-      context: .
+    image: warsawlo/warsawlo-django
     environment:
       DJANGO_SETTINGS_MODULE: warsawlo.settings
       DJANGO_DEBUG: "True"
