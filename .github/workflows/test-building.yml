@@ -30,8 +30,19 @@ jobs:
           push: false
           load: true
 
+      - name: Get SHA tag
+        id: get-sha-tag
+        uses: actions/github-script@v4
+        env:
+          TAGS: ${{ steps.meta.outputs.tags }}
+        with:
+          script: |
+            const { TAGS } = process.env;
+            const shaTag = TAGS.split('\n').find(tag => tag.includes('sha'));
+            core.setOutput('sha-tag', shaTag);
+
       - name: Run linter & tests
         env:
           COMPOSE_FILE: docker-compose.ci.yml
-          DOCKER_IMAGE: ${{ steps.meta.outputs.tags[0] }}
+          DOCKER_IMAGE: ${{ steps.get-sha-tag.outputs.sha-tag }}
         run: docker-compose run linter-and-tests
