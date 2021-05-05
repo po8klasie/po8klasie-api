@@ -33,5 +33,5 @@ jobs:
       - name: Run linter & tests
         env:
           COMPOSE_FILE: docker-compose.ci.yml
-          DOCKER_IMAGE: ${{ fromJson(steps.meta.outputs.bake-file).target.ghaction-docker-meta.tags[0] }}
+          DOCKER_IMAGE: ${{ steps.meta.outputs.tags[0] }}
         run: docker-compose run linter-and-tests
