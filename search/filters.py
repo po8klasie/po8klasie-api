@@ -12,9 +12,8 @@ from search.models import (
     School,
     SchoolType,
     HighSchoolClass,
-    SubjectName,
-    LanguageName,
     Address,
+    ExtendedSubject,
 )
 
 
@@ -75,7 +74,7 @@ class SchoolFilter(FilterSet):
 
     extended_subjects = MultipleChoiceFilter(
         field_name="highschoolclass__extendedsubject__name",
-        choices=SubjectName.choices + LanguageName.choices,
+        choices=get_available_values_from_model(ExtendedSubject, "name"),
         method="extended_subjects_filter",
     )
 
@@ -108,4 +107,4 @@ class SchoolFilter(FilterSet):
         return queryset.filter(
             highschoolclass__extendedsubject__name__in=value,
             highschoolclass__year__startswith=self.CURRENT_RECRUITMENT_YEAR,
-        )
+        ).distinct()
