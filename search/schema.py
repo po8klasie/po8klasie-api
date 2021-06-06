@@ -129,7 +129,7 @@ class SchoolNode(DjangoObjectType):
 
     school_id = String()
 
-    def resolve_classes(self, info):
+    def resolve_classes(self, info, year=None):
         return HighSchoolClass.objects.filter(school__id=self.id)
 
     def resolve_school_id(self, info):
