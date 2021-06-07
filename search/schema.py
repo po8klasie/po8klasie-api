@@ -113,6 +113,9 @@ class SchoolClassNode(DjangoObjectType):
 
     year = Int()
 
+    def resolve_extended_subjects(self, info):
+        return ExtendedSubject.objects.filter(high_school_class__id=self.id)
+
     def resolve_year(self, info):
         return self.year.lower
 
