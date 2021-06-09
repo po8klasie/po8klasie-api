@@ -10,6 +10,7 @@ from search.models import (
     ContactData,
     PublicInstitutionData,
     PrivateInstitutionData,
+    Statistics,
 )
 from .filters import SchoolFilter, SchoolClassFilter
 
@@ -102,6 +103,14 @@ class AddressNode(DjangoObjectType):
         interfaces = (relay.Node,)
 
 
+class StatisticsNode(DjangoObjectType):
+    class Meta:
+        model = Statistics
+        fields = "__all__"
+        filter_fields = "__all__"
+        interfaces = (relay.Node,)
+
+
 class SchoolClassNode(DjangoObjectType):
     class Meta:
         model = HighSchoolClass
@@ -111,10 +120,18 @@ class SchoolClassNode(DjangoObjectType):
 
     extended_subjects = DjangoFilterConnectionField(ExtendedSubjectNode)
 
+    statistics = Field(StatisticsNode)
+
     year = Int()
 
     def resolve_extended_subjects(self, info):
         return ExtendedSubject.objects.filter(high_school_class__id=self.id)
+
+    def resolve_statistics(self, info):
+        try:
+            return Statistics.objects.get(high_school_class__id=self.id)
+        except Statistics.DoesNotExist:
+            return None
 
     def resolve_year(self, info):
         return self.year.lower
@@ -145,6 +162,7 @@ class Query(ObjectType):
     public_institution_data = relay.Node.Field(PublicInstitutionDataNode)
     private_institution_data = relay.Node.Field(PrivateInstitutionDataNode)
     extended_subject = relay.Node.Field(ExtendedSubjectNode)
+    statistics = relay.Node.Field(StatisticsNode)
 
     school = Field(SchoolNode, school_id=String())
     all_schools = OrderedDjangoFilterConnectionField(
