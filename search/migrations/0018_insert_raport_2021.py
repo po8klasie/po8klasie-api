@@ -6,35 +6,35 @@ from django.db import migrations
 from psycopg2.extras import NumericRange
 
 CSV_FIELDS = (
-    'class__name',
-    'class__info',
-    'class__subject',
-    'class__occupation',
-    'school__school_name',
-    'school__addr__street',
-    'school__addr__building_nr',
-    'school__addr__postcode',
-    'school__addr__district',
-    'school__addr__city',
-    'school__addr__borough',
-    'school__addr__county',
-    'school__school_type',
-    'school__status', 
-    'institution__name',
-    'institution__city',
-    'institution__supervisor__name',
-    'institution__supervisor__city',
-    '_1',
-    '_2',
-    '_3',
-    '_4',
-    '_5',
-    '_6',
-    'school__type'
+    "class__name",
+    "class__info",
+    "class__subject",
+    "class__occupation",
+    "school__school_name",
+    "school__addr__street",
+    "school__addr__building_nr",
+    "school__addr__postcode",
+    "school__addr__district",
+    "school__addr__city",
+    "school__addr__borough",
+    "school__addr__county",
+    "school__school_type",
+    "school__status",
+    "institution__name",
+    "institution__city",
+    "institution__supervisor__name",
+    "institution__supervisor__city",
+    "_1",
+    "_2",
+    "_3",
+    "_4",
+    "_5",
+    "_6",
+    "school__type",
 )
-PUBLIC_SCHOOL = 'szkoła publiczna'
-CLASS_INFO_REGEX = r'\[(\S+)\]\s(([\S-]*)|(.+))\s*\((\S+)\)'
-LANGUAGE_REGEX = r'([a-z*]+)'
+PUBLIC_SCHOOL = "szkoła publiczna"
+CLASS_INFO_REGEX = r"\[(\S+)\]\s(([\S-]*)|(.+))\s*\((\S+)\)"
+LANGUAGE_REGEX = r"([a-z*]+)"
 
 
 def load(apps, schema_editor):
@@ -45,59 +45,56 @@ def load(apps, schema_editor):
 
     with open("csvs/raport_oddzialy_2021.csv", newline="") as csv_file:
         reader = csv.DictReader(csv_file, CSV_FIELDS)
-        next(reader) # Skip header line
+        next(reader)  # Skip header line
         for row in reader:
             data = {}
-            for field in fields:
+            for field in CSV_FIELDS:
                 # Build dicts from field path
-                field_path = field.split('__')
+                field_path = field.split("__")
                 current_dict = data
                 for key in field_path[:-1]:
                     current_dict = data.setdefault(key, dict())
-                    
+
                 current_dict[field_path[-1]] = row[field]
 
-            # School creation 
-            school_data = data['school']
+            # School creation
+            school_data = data["school"]
 
             try:
-                school = School.objects.get(school_name=school_data['name'])
+                school = School.objects.get(school_name=school_data["name"])
             except School.DoesNotExist:
-                is_public = school_data['status'] == PUBLIC_SCHOOL
+                is_public = school_data["status"] == PUBLIC_SCHOOL
                 school_extra_data = None
                 if not is_public:
                     school_extra_data = {
-                        'is_public': school_data['status'],
+                        "is_public": school_data["status"],
                     }
-                school= School.objects.create(
+                school = School.objects.create(
                     is_public=is_public,
                     data=school_extra_data,
                     **school_data,
                 )
 
-            address, created = Address.objects.get_or_create(
-                **school_data['addr']
-            )
+            address, created = Address.objects.get_or_create(**school_data["addr"])
             school.address = address
 
             school.save()
 
-
-            class_info = re.search(CLASS_INFO_REGEX, data['class']['info'])
+            class_info = re.search(CLASS_INFO_REGEX, data["class"]["info"])
 
             # Class creation
             hsc = HighSchoolClass.objects.create(
                 type=class_info.group(1),
-                name=data['class']['name'], 
+                name=data["class"]["name"],
                 school=school,
                 year=NumericRange(2021, 2023, "[)"),
             )
 
             # Subjects assignment
-            subjects = data['class']['subjects'].split(',')
+            subjects = data["class"]["subjects"].split(",")
             subject_options = {
                 name: short
-                for short, name in ExtendedSubject._meta.get_field('name').choices
+                for short, name in ExtendedSubject._meta.get_field("name").choices
             }
             for subject in subjects:
                 subject = subject.strip()
@@ -134,7 +131,7 @@ def reverse(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('search', '0017_auto_20210605_2206'),
+        ("search", "0017_auto_20210605_2206"),
     ]
 
     operations = [migrations.RunPython(load, reverse)]
