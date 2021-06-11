@@ -60,18 +60,20 @@ def load(apps, schema_editor):
             # School creation 
             school_data = data['school']
 
-            is_public = school_data['status'] == PUBLIC_SCHOOL
-            school_extra_data = None
-            if not is_public:
-                school_extra_data = {
-                    'is_public': school_data['status'],
-                }
-
-            school, created = School.objects.get_or_create(
-                is_public=is_public,
-                data=school_extra_data,
-                **school_data,
-            )
+            try:
+                school = School.objects.get(school_name=school_data['name'])
+            except School.DoesNotExist:
+                is_public = school_data['status'] == PUBLIC_SCHOOL
+                school_extra_data = None
+                if not is_public:
+                    school_extra_data = {
+                        'is_public': school_data['status'],
+                    }
+                school= School.objects.create(
+                    is_public=is_public,
+                    data=school_extra_data,
+                    **school_data,
+                )
 
             address, created = Address.objects.get_or_create(
                 **school_data['addr']
