@@ -67,7 +67,7 @@ def load(apps, schema_editor):
                     if not lan:
                         continue
                     is_multiple_levels = lan.endswith("*")
-                    is_bilingual = hsc.type = "D" and i == 0
+                    is_bilingual = hsc.type == "D" and i == 0
                     lan = lan.replace("*", "")
                     nr = 1 if lan in languages[0] else 2
                     lang = Language(
