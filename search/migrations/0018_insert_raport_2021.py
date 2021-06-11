@@ -8,17 +8,17 @@ from psycopg2.extras import NumericRange
 CSV_FIELDS = (
     "class__name",
     "class__info",
-    "class__subject",
+    "class__subjects",
     "class__occupation",
-    "school__school_name",
+    "school__name",
     "school__addr__street",
     "school__addr__building_nr",
     "school__addr__postcode",
     "school__addr__district",
     "school__addr__city",
-    "school__addr__borough",
-    "school__addr__county",
-    "school__school_type",
+    "_0",  # "school__addr__borough",
+    "_00",  # "school__addr__county",
+    "school__type",
     "school__status",
     "institution__name",
     "institution__city",
@@ -39,6 +39,7 @@ LANGUAGE_REGEX = r"([a-z*]+)"
 
 def load(apps, schema_editor):
     School = apps.get_model("search", "School")
+    Address = apps.get_model("search", "Address")
     HighSchoolClass = apps.get_model("search", "HighSchoolClass")
     ExtendedSubject = apps.get_model("search", "ExtendedSubject")
     Language = apps.get_model("search", "Language")
@@ -53,7 +54,7 @@ def load(apps, schema_editor):
                 field_path = field.split("__")
                 current_dict = data
                 for key in field_path[:-1]:
-                    current_dict = data.setdefault(key, dict())
+                    current_dict = current_dict.setdefault(key, dict())
 
                 current_dict[field_path[-1]] = row[field]
 
@@ -63,6 +64,10 @@ def load(apps, schema_editor):
             try:
                 school = School.objects.get(school_name=school_data["name"])
             except School.DoesNotExist:
+                address = Address.objects.filter(**school_data["addr"]).first()
+                if not address:
+                    address = Address.objects.create(**school_data["addr"])
+
                 is_public = school_data["status"] == PUBLIC_SCHOOL
                 school_extra_data = None
                 if not is_public:
@@ -70,15 +75,12 @@ def load(apps, schema_editor):
                         "is_public": school_data["status"],
                     }
                 school = School.objects.create(
+                    school_name=school_data["name"],
+                    school_type=school_data["type"],
                     is_public=is_public,
                     data=school_extra_data,
-                    **school_data,
+                    address=address,
                 )
-
-            address, created = Address.objects.get_or_create(**school_data["addr"])
-            school.address = address
-
-            school.save()
 
             class_info = re.search(CLASS_INFO_REGEX, data["class"]["info"])
 
