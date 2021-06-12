@@ -189,7 +189,10 @@ LOGGING = {
     },
 }
 
-GRAPHENE = {"SCHEMA": "search.schema.schema"}
+GRAPHENE = {
+    "SCHEMA": "search.schema.schema",
+    "RELAY_CONNECTION_MAX_LIMIT": 1000,
+}
 
 SESSION_COOKIE_SECURE = os.environ.get("SECURE_COOKIES", default="True") == "True"
 CSRF_COOKIE_SECURE = os.environ.get("SECURE_COOKIES", default="True") == "True"
