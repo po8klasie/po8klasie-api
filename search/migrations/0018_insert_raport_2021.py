@@ -69,7 +69,7 @@ def load(apps, schema_editor):
                     address = Address.objects.create(**school_data["addr"])
 
                 is_public = school_data["status"] == PUBLIC_SCHOOL
-                school_extra_data = None
+                school_extra_data = {}
                 if not is_public:
                     school_extra_data = {
                         "is_public": school_data["status"],
