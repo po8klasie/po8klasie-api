@@ -2,6 +2,7 @@ from graphene import ObjectType, relay, Schema, Connection, Int, String, Field, 
 from graphene_django import DjangoObjectType
 from graphene_django.filter import DjangoFilterConnectionField
 from graphene.utils.str_converters import to_snake_case
+from django.db.models import Q
 from search.models import (
     School,
     HighSchoolClass,
@@ -173,7 +174,12 @@ class Query(ObjectType):
     all_school_classes = DjangoFilterConnectionField(SchoolClassNode)
 
     def resolve_school(self, info, school_id):
-        return School.objects.get(id=school_id)
+        try:
+            return School.objects.get(
+                Q(id=school_id) | Q(public_institution_data__regon=school_id)
+            )
+        except School.DoesNotExist:
+            return None
 
 
 schema = Schema(query=Query)
