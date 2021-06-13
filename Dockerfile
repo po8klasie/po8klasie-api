@@ -1,6 +1,6 @@
 # Comppile stage
 
-FROM python:3.8-alpine AS compile-image
+FROM python:3.8 AS compile-image
 
 RUN apk update && apk add \
     g++ \
@@ -17,7 +17,7 @@ RUN pip install -r requirements.txt
 
 # Final image stage
 
-FROM python:3.8-alpine
+FROM python:3.8
 
 LABEL maintainer="mlazowik@gmail.com"
 
