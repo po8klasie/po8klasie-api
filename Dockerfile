@@ -1,33 +1,14 @@
-# Comppile stage
+FROM python:3.8
 
-FROM python:3.8-alpine AS compile-image
+LABEL maintainer="mlazowik@gmail.com"
 
-RUN apk update && apk add \
-    g++ \
-    linux-headers \
-    make \
-    postgresql-dev \
-    libffi-dev
+ENV PYTHONUNBUFFERED 1
 
 RUN python -m venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
 
 COPY requirements.txt ./
 RUN pip install -r requirements.txt
-
-# Final image stage
-
-FROM python:3.8-alpine
-
-LABEL maintainer="mlazowik@gmail.com"
-
-RUN apk update && apk add \
-    postgresql-dev
-
-ENV PYTHONUNBUFFERED 1
-
-COPY --from=compile-image /opt/venv /opt/venv
-ENV PATH="/opt/venv/bin:$PATH"
 
 ENV SOURCE /opt/warsawlo
 RUN mkdir -p $SOURCE
