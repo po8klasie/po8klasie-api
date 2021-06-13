@@ -30,6 +30,6 @@ router.register(
 )
 
 urlpatterns = [
-    path("", include(router.urls)),
+    path("rest/", include(router.urls)),
     path("graphql/", csrf_exempt(GraphQLView.as_view(graphiql=True))),
 ]
