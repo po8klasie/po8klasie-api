@@ -51,7 +51,8 @@ class SchoolClassFilter(FilterSet):
 
 
 class SchoolFilter(FilterSet):
-    CURRENT_RECRUITMENT_YEAR = 2020
+    # don't forget also to change current recruitment year const in front-end repo
+    CURRENT_RECRUITMENT_YEAR = 2021
     SUPPORTED_SCHOOL_TYPES = [SchoolType.LO, SchoolType.TECH, SchoolType.BRAN]
     QUERY_FIELD = "school_name"
     MIN_QUERY_SIMILARITY = 0.05
