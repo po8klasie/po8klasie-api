@@ -41,7 +41,7 @@ jobs:
             const shaTag = TAGS.split('\n').find(tag => tag.includes('sha'));
             core.setOutput('sha-tag', shaTag);
 
-      - name: Run linter & tests
+      - name: Run linters & tests
         env:
           COMPOSE_FILE: docker-compose.ci.yml
           DOCKER_IMAGE: ${{ steps.get-sha-tag.outputs.sha-tag }}
