@@ -30,6 +30,7 @@ uritemplate==3.0.1
 urllib3==1.25.8
 uwsgi==2.0.18
 whitenoise==5.0.1
+pandas==1.2.4
 
 pip~=20.2.2
 Brotli~=1.0.7
