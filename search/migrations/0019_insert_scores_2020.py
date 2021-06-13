@@ -3,30 +3,7 @@ from django.db import migrations
 from psycopg2.extras import NumericRange
 
 
-def update_school_data(apps):
-    School = apps.get_model("search", "School")
-
-    data = pd.read_csv("csvs/publiczne_oddzialy_2020.csv", sep=";").to_dict(orient="records")
-    for item in data:
-        regon = str(item.get("REGON szkoły")).zfill(9)
-        try:
-            school = School.objects.get(public_institution_data__regon=regon)
-        except School.DoesNotExist:
-            continue
-        else:
-            school.address.city = item.get("Miejscowość szkoły")
-            school.address.postcode = item.get("Kod pocztowy szkoły")
-            school.address.district = item.get("Dzielnica")
-            school.address.street = item.get("Ulica szkoły")
-            school.address.building_nr = item.get("Nr budynku szkoły")
-            school.school_name = item.get("Nazwa szkoły").strip()
-            school.school_type = item.get("Typ szkoły (LO/LP/TECH/BR1St/LU/TU/PS)")
-            school.is_public = item.get("Uprawnienia publiczne") == "szkoła publiczna"
-            school.address.save()
-            school.save()
-
-
-def insert_scores(apps):
+def insert_scores(apps, schema_editor):
     HighSchoolClass = apps.get_model("search", "HighSchoolClass")
     Statistics = apps.get_model("search", "Statistics")
 
@@ -52,11 +29,6 @@ def insert_scores(apps):
             )
 
 
-def load_data(apps, schema_editor):
-    update_school_data(apps)
-    insert_scores(apps)
-
-
 def reverse(apps, schema_editor):
     Statistics = apps.get_model("search", "Statistics")
     Statistics.objects.filter(high_school_class__year=(2020, 2022)).delete()
@@ -64,4 +36,4 @@ def reverse(apps, schema_editor):
 
 class Migration(migrations.Migration):
     dependencies = [("search", "0018_insert_raport_2021")]
-    operations = [migrations.RunPython(load_data, reverse)]
+    operations = [migrations.RunPython(insert_scores, reverse)]
