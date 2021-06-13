@@ -63,5 +63,5 @@ def reverse(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
-    dependencies = [("search", "0014_auto_20210416_2111")]
+    dependencies = [("search", "0018_insert_raport_2021")]
     operations = [migrations.RunPython(load_data, reverse)]
