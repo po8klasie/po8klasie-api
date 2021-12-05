@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>WarsawLO API</title>
+    <style>
+        body {
+            padding: 0;
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+        }
+
+        .container {
+            width: 60%;
+            margin: 10vh auto 0 auto;
+        }
+
+        li {
+            padding: 0.3rem 0;
+        }
+
+        .warning {
+            display: inline-block;
+            margin: 1rem 0;
+            padding: 0.5rem;
+            border-radius: 5px;
+            border: 2px solid #f6e58d;
+            font-weight: bold;
+            line-height: 1.5rem;
+        }
+        a, a:visited{
+            color: black;
+        }
+
+        @media (max-width: 450px) {
+            .container {
+                width: calc(100% - 2rem);
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>WarsawLO API</h1>
+    <span class="warning">
+        While we share our API, it is primarily intended for internal use. <br />
+        The API schema is subject to change without notice.
+    </span>
+    <p>Explore our APIs:</p>
+    <ul>
+        <li>
+            Search
+            <ul>
+                <li>
+                    <a href="/api/search/graphql/">GraphQL API</a>
+                </li>
+                <li>
+                    <a href="/api/search/rest/">REST API</a> (maintenance only)
+                </li>
+            </ul>
+        </li>
+    </ul>
+    <br />
+    <p>
+       More info on <a href="https://github.com/warsawlo/warsawlo-django">GitHub</a>
+    </p>
+</div>
+</body>
+</html>
