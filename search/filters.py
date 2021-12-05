@@ -84,6 +84,11 @@ class SchoolFilter(FilterSet):
         choices=get_available_values_from_model(Address, "district"),
     )
 
+    school_type = MultipleChoiceFilter(
+        field_name="school_type",
+        choices=get_available_values_from_model(School, "school_type"),
+    )
+
     def include_unsupported_filter(self, queryset, _name, value):
         print(value)
         if value is True:
